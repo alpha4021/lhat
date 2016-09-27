@@ -1,0 +1,59 @@
+doctype html
+
+html
+	head
+		title Enemy Skills & Drops
+		link(rel="stylesheet" type="text/css" href="/prompt.css")
+	body
+		|#{name}
+		br
+		|Skill Number: 
+		|#{skills.length}
+		br
+		- for(var x = 0;x<skills.length;x++)
+			table(id='skill'+x border=1).container
+				tr
+					td
+						|SR: #{skills[x].skill_rank}/#{skills[x].skill_max_rank}
+					td(colspan=3)
+						|#{skills[x].tags.toString()}
+				tr
+					td
+						|#{skills[x].name}
+					td
+						|#{skills[x].type}
+					td
+						|#{skills[x].timing}
+					td
+						|#{skills[x].roll}
+						//target range cost limit
+				tr
+					td
+						|#{skills[x].target}
+					td
+						|#{skills[x].range}
+					td
+						|#{skills[x].cost}
+					td
+						|#{skills[x].limit}
+				tr
+					td(colspan=4)
+						|#{skills[x].function}
+		table(id='drop' border=1).container
+			tr
+				td
+					|adviced_value
+				td
+					|#{drop.adviced_value}
+			tr
+				td
+					|fixed
+				td
+					|#{drop.fixed}
+			- for(var x = 1;x<7;x++)
+				tr
+					td
+						|#{x}
+					td
+						|#{drop.roll[x]}
+		

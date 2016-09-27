@@ -1,0 +1,39 @@
+{
+	"id":2,
+	"name" : "Type 1 Armoror",
+	"character_rank" : 2,
+	"tags" : ["MOB","BOSS"],
+	"max_hitpoint" : 65,
+	"effect" : 0,
+	"action" : 2,
+	"move" : 2,
+	"physical_defense" : 12,
+	"magic_defense" : 5,
+	"str_value" : 3,
+	"dex_value" : 1,
+	"pow_value" : 2,
+	"int_value" : 1,
+	"abl_avoid" : "2+2D",
+	"abl_resist" : "1+2D",
+	"hate" : 1,
+	"skills" : [{
+		"job_type" : null,
+		"type" : "戦闘",
+		"name" : "BA Type 1",
+		"skill_rank" : 1,
+		"skill_max_rank" : 1,
+		"timing" : "メジャー",
+		"roll" : "対決（5+2D／回避）",
+		"target" : "単体",
+		"range" : "至近",
+		"cost" : "－",
+		"limit" : "－",
+		"tags" : ["白兵攻撃"],
+		"function" : "[16+2D]の物理ダメージを与える。"
+	}],
+	"drop" : {
+		"adviced_value" : 28,
+		"fixed" : "",
+		"roll" : [null,"","","","","",""]
+	}
+}

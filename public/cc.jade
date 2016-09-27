@@ -1,0 +1,463 @@
+doctype html
+
+html
+	head
+		title CharacterController
+		link(rel="stylesheet" type="text/css" href="controller.css")
+		script(src='jquery-3.1.0.js').
+		script(type="text/javascript").
+			const c_effects = {fire:'火炎',ice:'冷気',shock:'電撃',light:'光輝',dark:'邪毒',san:'精神',near:'白兵攻撃',far:'射撃攻撃',weapon:'武器攻撃',magic:'魔法攻撃',special:'特殊攻撃'};
+			var adatas = [];
+			//var edatas = [];
+			var showid = 0;
+			$(document).ready(function(){
+				$.post('./alist/c',function(data){
+					console.log(data);
+					adatas = data;
+					loadEdatas();
+				});
+				$(':checkbox').click(function(){
+					//alert('called');
+					var id = $(this).attr('id').split("_");
+					var x = id[2];
+					var cs = id[1].charAt(2);
+					//alert(cs.charAt(2));
+					set_bs_checkbox(x,cs);
+					//cast status effect
+				});
+			});
+			if(!!window.EventSource)
+				source = new EventSource('/sse/ac');
+			//listener source url
+			source.onopen = function(){
+				console.log('eventsource on open');
+			};
+			source.onmessage = function(re) {
+				//console.log(re);
+				console.log("/sse/ac/ on message");
+				var data = JSON.parse(re.data);
+				//console.log(re);
+				adatas = data.a;
+				loadEdatas();
+			};
+			window.onunload = function(){
+				//source.close();
+			};
+			function loadEdatas(){
+				for(var x = 0;x<adatas.length;x++){
+					loadEdata(x);
+					$('#cont'+x).removeClass('unload');
+				}
+				for(var x = adatas.length;x<12;x++){
+					$('#cont'+x).addClass('unload');
+				}
+			}
+			function loadEdata(x){
+				//constant enemy data
+				var adata = adatas[x];
+				var data = adatas[x].data;
+				$('#e_name_'+x).val(data.name);
+				$('#e_max_hp_'+x).val(data.max_hitpoint);
+				$('#e_CR_'+x).val(data.character_rank);
+				$('#e_lid_'+x).val(adata.type+adata.lid);
+				$('#e_tags_'+x).val(data.tags.toString());
+				$('#e_action_'+x).val(data.action);
+				$('#e_move_'+x).val(data.move);
+				$('#e_hate_'+x).val(adata.hate);//active data
+				$('#e_pdef_'+x).val(data.physical_defense);
+				$('#e_mdef_'+x).val(data.magic_defense);
+				$('#e_avoid_'+x).val(data.abl_avoid);
+				$('#e_resist_'+x).val(data.abl_resist);
+				
+				//PC data
+				$('#e_patk_'+x).val(data.physical_attack);
+				$('#e_matk_'+x).val(data.magic_attack);
+				$('#e_motn_'+x).val(data.abl_motion);
+				$('#e_dura_'+x).val(data.abl_durability);
+				$('#e_dism_'+x).val(data.abl_dismantle);
+				$('#e_oper_'+x).val(data.abl_operate);
+				$('#e_sense_'+x).val(data.abl_sense);
+				$('#e_nego_'+x).val(data.abl_negotiate);
+				$('#e_know_'+x).val(data.abl_knowledge);
+				$('#e_anly_'+x).val(data.abl_analyze);
+				$('#e_heal_'+x).val(data.heal_power);
+				$('#e_hit_'+x).val(data.abl_hit);
+				
+				$('#e_STR_'+x).val(data.str_value+'('+data.str_basic_value+')');
+				$('#e_DEX_'+x).val(data.dex_value+'('+data.dex_basic_value+')');
+				$('#e_POW_'+x).val(data.pow_value+'('+data.pow_basic_value+')');
+				$('#e_INT_'+x).val(data.int_value+'('+data.int_basic_value+')');
+				
+				//active data
+				$('#e_hp_'+x).val(adata.hp);
+				$('#e_effect_'+x).val(adata.effect);
+				//console.log('loadEdata, bs1='+adata.bs[1]);
+				$('#t_bs1_'+x)[0].checked = (adata.bs[1]==1);
+				$('#t_bs2_'+x)[0].checked = (adata.bs[2]==1);
+				$('#t_bs3_'+x)[0].checked = (adata.bs[3]==1);
+				$('#t_bs4_'+x)[0].checked = (adata.bs[4]==1);
+				$('#e_bs5_'+x).val(adata.bs[5]);
+				$('#t_bs6_'+x)[0].checked = (adata.bs[6]==1);
+				$('#t_bs7_'+x)[0].checked = (adata.bs[7]==1);
+				show_bs8(x);
+				$('#e_cs1_'+x).val(adata.cs[1]);
+				$('#e_cs3_'+x).val(adata.cs[3]);
+				$('#e_cs2_'+x).val('');
+				for(var i = 0;i<adata.cs[2].length;i++){
+					//alert(i);
+					$('#e_cs2_'+x).val($('#e_cs2_'+x).val()+'('+c_effects[adata.cs[2][i].type]+'):'+adata.cs[2][i].value+'/');
+				}
+				
+				
+			}
+			function effect_add(x){
+				adatas[x].effect++;
+				updateAlistToServer(x,'effect');
+			}
+			function effect_minus(x){
+				if(adatas[x].effect==0)return;
+				adatas[x].effect--;
+				updateAlistToServer(x,'effect');
+			}
+			function hate_add(x){
+				adatas[x].hate++;
+				updateAlistToServer(x,'hate');
+			}
+			function hate_minus(x){
+			if(adatas[x].hate==0)return;
+				adatas[x].hate--;
+				updateAlistToServer(x,'hate');
+			}
+			function set_bs_checkbox(x,bs){
+				//only bs123467
+				//console.log(bs);
+				switch(bs){
+					case '1':case '2':case '3':case '4':case '6':case '7':
+					adatas[x].bs[bs] = ($('#t_bs'+bs+'_'+x)[0].checked?1:0);
+					//console.log('t_bs'+bs+'_'+x);
+					console.log(($('#t_bs'+bs+'_'+x)[0].checked?1:0));
+					updateAlistToServer(x,'bs'+bs);
+					break;
+					default:break;
+				}
+			}
+			function cleanup(x){
+				console.log('cleanup_'+x);
+				//var eff_bs5 = $('#e_bs5_'+x).val();
+				//var eff_cs1 = $('#e_cs1_'+x).val();
+				console.log('bs5='+adatas[x].bs[5]);
+				adatas[x].hp = adatas[x].hp * 1 - adatas[x].bs[5] * 1 + adatas[x].cs[1] * 1;
+				$('#e_hp_'+x).val(adatas[x].hp);
+				updateAlistToServer(x,'hp');
+				adatas[x].bs[5] = 0;
+				$('#e_bs5_'+x).val(0);
+				updateAlistToServer(x,'bs5');
+			}
+			function push_bs8(x){
+				if($('#e_bs8_'+x).val() == ''||$('#e_bs8_'+x).val()<=0)return;
+				else (adatas[x].bs[8]).push($('#e_bs8_'+x).val()*1);
+				$('#e_bs8_'+x).val(0);
+				show_bs8(x);
+				updateAlistToServer(x,'bs8')
+			}
+			function pop_bs8(x){
+				if((adatas[x].bs[8])===undefined||(adatas[x].bs[8]).length==0)return;
+				var eff = (adatas[x].bs[8]).shift();
+				console.log(adatas[x].bs[8]);
+				updateAlistToServer(x,'bs8');
+				show_bs8(x);
+				adatas[x].hp = adatas[x].hp * 1 - eff;
+				$('#e_hp_'+x).val(adatas[x].hp);
+				updateAlistToServer(x,'hp');
+			}
+			function show_bs8(x){//print bs8 array to textfield
+				if(adatas[x].bs[8].length>0)(adatas[x].bs[8]).sort(function(a, b){return b-a});//descending order
+				$('#e2_bs8_'+x).val((adatas[x].bs[8]).toString());
+			}
+			function csd(x){
+				//prompt popup window
+				window.open('./csd/'+adatas[x].id,'',"toolbar=0,menubar=0,status=0,resizable=0,width=300,height=500");
+				//alert(adatas[x].id);
+			}
+			function cit(x){
+				window.open('./cit/'+adatas[x].id,'',"toolbar=0,menubar=0,status=0,resizable=0,width=300,height=500");
+			}
+			function acs2(x){
+				var lid = adatas[x].lid;
+				var type = adatas[x].type;
+				window.open('./acs2/'+adatas[x].type+'/'+adatas[x].lid+'/','',"location=0,toolbar=0,menubar=0,status=0,resizable=0,width=180,height=200");
+			}
+			function ccu(x){
+				window.open('./ccu/'+adatas[x].id,'',"toolbar=0,menubar=0,status=0,resizable=0,width=300,height=500");
+				
+			}
+			function set_bs5(x){
+				adatas[x].bs[5] = $('#e_bs5_'+x).val();
+				updateAlistToServer(x,'bs5');
+			}
+			function set_cs1(x){
+				adatas[x].cs[1] = $('#e_cs1_'+x).val();
+				updateAlistToServer(x,'cs1');
+			}
+			function set_cs3(x){
+				adatas[x].cs[3] = $('#e_cs3_'+x).val();
+				updateAlistToServer(x,'cs3');
+			}
+			
+			function updateAlistToServer(x,item){
+				var value;
+				switch(item){
+					case 'effect':
+					case 'hp':
+					case 'hate':
+						//adatas[x][item] = $('#e_'+item+'_'+x).val()
+						value = adatas[x][item];
+					break;
+					case 'bs1':
+					case 'bs2':
+					case 'bs3':
+					case 'bs4':
+					case 'bs6':
+					case 'bs7':
+					case 'bs8':
+					case 'bs5':
+						//console.log(adatas[x].bs[item.charAt(2)]);
+						value = adatas[x].bs[item.charAt(2)];
+						break;
+					case 'cs3':
+					case 'cs1':
+						value = adatas[x].cs[item.charAt(2)];
+					break;
+					
+				}
+				//update alist
+				console.log("update "+item+" "+value);
+				
+				$.post('./update/c/'+x+'/',{item:item,value:value});
+			}
+	body
+		br
+		- for(var x=0;x<12;x++)
+			div(id='cont'+x).container.pc.unload
+				table(id='table0_'+x).value
+					tr
+						td
+							|CR:
+							input(id='e_CR_'+x disabled type='text').shortvalue
+						td
+							|LID 
+							input(id='e_lid_'+x disabled type='text').shortvalue
+						td(colspan=2)
+							input(id='e_name_'+x disabled type='text').longvalue
+				table(id='table0a_'+x).value
+					tr
+						td
+							|HP:
+							input(id='e_hp_'+x type='text').shortvalue
+							|/
+							input(id='e_max_hp_'+x disabled type='text').shortvalue
+						td(colspan=2)
+							|タグ
+							input(id='e_tags_'+x disabled type='text').quitelongvalue
+				table(id='table1_'+x).value
+					tr
+						td(width='25%')
+							|因果力
+							br
+							button.mini(onClick='effect_add('+x+')') +
+							input(id='e_effect_'+x type='text').value
+							button.mini(onClick='effect_minus('+x+')') -
+						td(width='25%')
+							|行動力
+							br
+							input(id='e_action_'+x disabled type='text').value
+						td(width='25%')
+							|移動力
+							br
+							input(id='e_move_'+x disabled type='text').value
+						td(width='25%')
+							|ヘイト
+							br
+							button.mini(onClick='hate_add('+x+')') +
+							input(id='e_hate_'+x type='text').value
+							button.mini(onClick='hate_minus('+x+')') -
+					tr
+						td
+							|攻撃力
+							br
+							input(id='e_patk_'+x disabled type='text').value
+						td
+							|魔力
+							br
+							input(id='e_matk_'+x disabled type='text').value
+						td
+							|物理防御力
+							br
+							input(id='e_pdef_'+x disabled type='text').value
+						td
+							|魔法防御力
+							br
+							input(id='e_mdef_'+x disabled type='text').value
+					tr
+						td
+							|STR
+							br
+							input(id='e_STR_'+x disabled type='text').value
+						td
+							|運動値
+							br
+							input(id='e_motn_'+x disabled type='text').value
+						td
+							|耐久値
+							br
+							input(id='e_dura_'+x disabled type='text').value
+						td
+							|回復力
+							br
+							input(id='e_heal_'+x disabled type='text').value
+					tr
+						td
+							|DEX
+							br
+							input(id='e_DEX_'+x disabled type='text').value
+						td
+							|解除値
+							br
+							input(id='e_dism_'+x disabled type='text').value
+						td
+							|操作値
+							br
+							input(id='e_oper_'+x disabled type='text').value
+						td
+							|回避値
+							br
+							input(id='e_avoid_'+x disabled type='text').value
+					tr
+						td
+							|POW
+							br
+							input(id='e_POW_'+x disabled type='text').value
+						td
+							|知覚値
+							br
+							input(id='e_sense_'+x disabled type='text').value
+						td
+							|交渉値
+							br
+							input(id='e_nego_'+x disabled type='text').value
+						td
+							|抵抗値
+							br
+							input(id='e_resist_'+x disabled type='text').value
+					tr
+						td
+							|INT
+							br
+							input(id='e_INT_'+x disabled type='text').value
+						td
+							|知識値
+							br
+							input(id='e_know_'+x disabled type='text').value
+						td
+							|解析値
+							br
+							input(id='e_anly_'+x disabled type='text').value
+						td
+							|命中値
+							br
+							input(id='e_hit_'+x disabled type='text').value
+					tr
+
+							
+				table(id='table2_'+x).value
+					tr.lock
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs1_'+x)
+								div.slider.red
+									|萎縮
+									br
+									|萎縮
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs2_'+x)
+								div.slider.red
+									|放心
+									br
+									|放心
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs3_'+x)
+								div.slider.red
+									|硬直
+									br
+									|硬直
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs4_'+x)
+								div.slider.red
+									|惑乱
+									br
+									|惑乱
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs6_'+x)
+								div.slider.red
+									|重篤
+									br
+									|重篤
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs7_'+x)
+								div.slider.red
+									|慢心
+									br
+									|慢心
+						td.switch
+							button(onClick='csd('+x+')' class='switch').
+								Skill
+				table(id='table3_'+x).value
+					tr.lock
+						td.border
+							|衰弱
+							input(type='text' id='e_bs5_'+x).shortvalue
+							br
+							button(onClick='set_bs5('+x+')').
+								set
+						td.border
+							|再生
+							input(type='text' id='e_cs1_'+x).shortvalue
+							br
+							button(onClick='set_cs1('+x+')').
+								set
+						td.border
+							|追擊
+							input(type='text' id='e_bs8_'+x).shortvalue
+							br
+							button(onClick='push_bs8('+x+')').
+								push
+						td.border
+							|障壁
+							input(type='text' id='e_cs3_'+x).shortvalue
+							br
+							button(onClick='set_cs3('+x+')').
+								set
+						td
+							button(onClick='cleanup('+x+')').
+								cleanup
+					tr
+						td(colspan=4)
+							|追擊
+							input(type='text' disabled id='e2_bs8_'+x).quitelongvalue
+							button(onClick='pop_bs8('+x+')').
+								pop
+						td
+							button(onClick='acs2('+x+')').
+								輕減
+				textarea(type='text' disabled id='e_cs2_'+x).cs2
+				button(onClick='ccu('+x+')').
+					Connection & Union
+				button(onClick='cit('+x+')').
+					Items
+				button(onClick='details('+x+')').
+					Details(empty)

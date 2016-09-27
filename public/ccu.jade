@@ -1,0 +1,29 @@
+doctype html
+
+html
+	head
+		title Character Connection & Union
+		link(rel="stylesheet" type="text/css" href="/prompt.css")
+	body
+		|#{name}
+		br
+		|Connections: 
+		|#{connections.length}
+		br
+		table
+			- for(var x = 0;x<connections.length;x++)
+				tr
+					td.display
+						|#{connections[x].name}
+					td
+						#{connections[x].tags.toString()}
+					td
+						#{connections[x].detail}
+		|Unions:
+		|#{unions.length}
+		table
+			- for(var x = 0;x<unions.length;x++)
+				tr
+					td
+					td
+					td

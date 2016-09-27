@@ -1,0 +1,6 @@
+battle controller
+phases control
+character turn control
+attack simulator
+location control
+map viewing

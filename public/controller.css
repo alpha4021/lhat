@@ -1,0 +1,140 @@
+body{
+	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+	font-size: 12px;
+}
+h1 {
+	font-family: calibri;
+}
+button{
+	padding: 1px 0px 1px 0px;
+	
+}
+div.container {
+	border-style: solid;
+	width: 280px;
+	display: inline-block;
+}
+div.ec{
+	height: 380px;
+}
+div.pc{
+	height: 490px;
+}
+div.unload {
+	display: none;
+}
+
+input.shortvalue {
+	width: 16px;
+	display: inline-block;
+	text-align: center;
+}
+button.mini{
+	width: 10px;
+	border: 1px;
+	padding: 0px;
+}
+input{
+	height:10px;
+	
+}
+input.value {
+	width: 36px;
+	text-align: center;
+}
+input.longvalue {
+	width: 108px;
+	
+}
+input.quitelongvalue {
+	width: 162px;
+	
+}
+input.verylongvalue {
+	width: 216px;
+	
+}
+table.value{
+	width: 100%;
+	padding: 0px;
+	border: 0px;
+}
+tr td {
+	border:0;
+	text-align:center;
+}
+td.switch{
+	padding: 0px 0px 0px 0px;
+	
+}
+td.border{
+	border: 1px;
+	border-style: dotted;
+	
+}
+textarea.cs2{
+	width: 278px;
+	height: 103px;
+	padding: 0px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 40px;
+  left: 2;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  padding-top: 2px;
+  line-height: 135%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 36px;
+  background-color: #212121;
+  color: #fff;
+  -webkit-transition: .2s;
+  transition: .2s;
+  font-size: 14px;
+  text-align: center;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 34px;
+  top: 2px;
+  left: 1px;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+tr.lock{
+	height: 42px !important;
+}
+input:checked + .slider.green {
+  background-color: #21F321;
+}
+
+input:checked + .slider.blue {
+  background-color: #2121F3;
+}
+
+input:checked + .slider.red {
+  background-color: #F32121;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateY(20px);
+  -ms-transform: translateY(20px);
+  transform: translateY(20px);
+}

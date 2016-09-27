@@ -1,0 +1,50 @@
+﻿/*
+◆〈Ｔｙｐｅ-１　アーマラー　ＣＲ２〉
+　【ＳＴＲ】３　【ＤＥＸ】１　【ＰＯＷ】２　【ＩＮＴ】１
+　【回避】２＋２Ｄ　【抵抗】１＋２Ｄ　【物理防御力】１２　【魔法防御力】５
+　【最大ＨＰ】６５　【ヘイト倍率】×１　【行動力】２　【移動力】２
+▼特技
+《基本攻撃手段　Ｔｙｐｅ１》＿［白兵攻撃］＿メジャー＿対決（５＋２Ｄ／回避）＿単体＿至近＿［１６＋２Ｄ］の物理ダメージを与える。
+▼ドロップ品
+ドロップ期待値：２８Ｇ
+*/
+
+{
+	"name" : "Type 1 Armoror",
+	"character_rank" : 2,
+	"job" : "アーマラー"
+	"tags" : [""],
+	"max_hitpoint" : 65,
+	"effect" : 1,
+	"action" : 2,
+	"move" : 2,
+	"physical_defense" : 12,
+	"magic_defense" : 5,
+	"str_value" : 1,
+	"dex_value" : 3,
+	"pow_value" : 5,
+	"int_value" : 3,
+	"abl_avoid" : "2+2D",
+	"abl_resist" : "1+2D",
+	"hate" : 1,
+	"skills" : [{
+		"job_type" : null,
+		"type" : "戦闘",
+		"name" : "BA Type 1",
+		"skill_rank" : 1,
+		"skill_max_rank" : 1,
+		"timing" : "メジャー",
+		"roll" : "対決（５＋２Ｄ／回避）",
+		"target" : "単体",
+		"range" : "至近",
+		"cost" : "－",
+		"limit" : "－",
+		"tags" : ["白兵攻撃"],
+		"function" : "［１６＋２Ｄ］の物理ダメージを与える。"
+	}],
+	"drop" : {
+		"adviced_value" : 28
+		"fixed" : ""//固定掉落
+		"roll" : [null,"","","","","",""]//roll 1D, 1~6
+	}
+}

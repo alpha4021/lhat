@@ -1,0 +1,173 @@
+doctype html
+html
+	head
+		title Character Items
+		link(rel="stylesheet" type="text/css" href="/prompt.css")
+		script(src='/jquery-3.1.0.js').
+		script(type="text/javascript").
+			$(document).ready(function(){
+				$('div').click(function(){
+					
+					if($('#table_'+$(this).attr('id')).hasClass('unload')){
+						$('#table_'+$(this).attr('id')).removeClass('unload');
+					} else {
+						$('#table_'+$(this).attr('id')).addClass('unload');
+					}
+				});
+			});
+		- var e = ["手アイテム1","手アイテム2","防具","補助装備1","補助装備2","補助装備3","鞄"]
+	body
+		|#{name}
+		br
+		- for(var x = 0;x<7;x++)
+			- if(equipments[x])
+				div(id=''+x).display.item
+					div.left
+						|▽#{e[x]}
+					div.flex
+					div.right
+						|#{equipments[x].alias}
+				table(id='table_'+x).container.display.unload
+					tr
+						td
+							|#{equipments[x].type}
+						td
+							|IR: #{equipments[x].item_rank}
+					tr
+						td(colspan=4)
+							|#{equipments[x].name}
+					tr
+						td(colspan=4)
+							|Tags: #{equipments[x].tags.toString()}
+					tr
+						td
+							|攻撃力
+							br
+							|#{equipments[x].physical_attack}
+						td
+							|魔力
+							br
+							|#{equipments[x].magic_attack}
+						td
+							|物理防御力
+							br
+							|#{equipments[x].physical_defense}
+						td
+							|魔法防御力
+							br
+							|#{equipments[x].magic_defense}
+					tr
+						td
+							|命中修正
+							br
+							|#{equipments[x].hit}
+						td
+							|行動修正
+							br
+							|#{equipments[x].action}
+						td
+							|価格
+							br
+							|#{equipments[x].price}
+					tr
+						td
+							|射程
+							br
+							|#{equipments[x].range}
+						td
+							|タイミング
+							br
+							|#{equipments[x].timing}
+						td
+							|対象
+							br
+							|#{equipments[x].target}
+						td
+							|判定
+							br
+							|#{equipments[x].roll}
+					tr
+						td(colspan=4)
+							|#{equipments[x].function}
+					tr
+						td(colspan=4)
+							|#{equipments[x].prefix_function}
+			- else
+				div.display.backred
+					|✖#{e[x]}
+		- for(var x = 7;x<items.length+7;x++)
+			- if(items[x-7])
+				div(id=''+x).display.item
+					div.left
+						|▽所持品アイテム#{x-6}
+					div.flex
+					div.right
+						|#{items[x-7].alias}
+				table(id='table_'+x).container.display.unload
+					tr
+						td
+							|#{items[x-7].type}
+						td
+							|IR: #{items[x-7].item_rank}
+					tr
+						td(colspan=4)
+							|#{items[x-7].name}
+					tr
+						td(colspan=4)
+							|Tags: #{items[x-7].tags.toString()}
+					tr
+						td
+							|攻撃力
+							br
+							|#{items[x-7].physical_attack}
+						td
+							|魔力
+							br
+							|#{items[x-7].magic_attack}
+						td
+							|物理防御力
+							br
+							|#{items[x-7].physical_defense}
+						td
+							|魔法防御力
+							br
+							|#{items[x-7].magic_defense}
+					tr
+						td
+							|命中修正
+							br
+							|#{items[x-7].hit}
+						td
+							|行動修正
+							br
+							|#{items[x-7].action}
+						td
+							|価格
+							br
+							|#{items[x-7].price}
+					tr
+						td
+							|射程
+							br
+							|#{items[x-7].range}
+						td
+							|タイミング
+							br
+							|#{items[x-7].timing}
+						td
+							|対象
+							br
+							|#{items[x-7].target}
+						td
+							|判定
+							br
+							|#{items[x-7].roll}
+					tr
+						td(colspan=4)
+							|#{items[x-7].function}
+					tr
+						td(colspan=4)
+							|#{items[x-7].prefix_function}
+			- else
+				div.display.backred
+					|✖所持品アイテム#{x-6}

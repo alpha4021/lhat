@@ -1,0 +1,72 @@
+doctype html
+
+html
+	head
+		title Active Combat Status 2 : Reduction
+		link(rel="stylesheet" type="text/css" href="/prompt.css")
+		script(src='/jquery-3.1.0.js').
+		script(type="text/javascript").
+			function add(){
+				var type = $('#f_type').val();
+				var value = $('#f_value').val();
+				if(value==""||value===undefined){alert('Please enter value.');return;}
+				//alert(type+value);
+				$.post('./a',{type:type,value:value},function(data){
+					location.reload();
+				});
+			}
+			function remove(x){
+				//alert(x);
+				$.post('./r',{cs2id:x},function(data){
+					location.reload();
+				});
+			}
+			
+		- const c_effects = {fire:'火炎',ice:'冷気',shock:'電撃',light:'光輝',dark:'邪毒',san:'精神',near:'白兵攻撃',far:'射撃攻撃',weapon:'武器攻撃',magic:'魔法攻撃',special:'特殊攻撃'};
+	body
+		|Existing :
+		|#{data.length}
+		br
+		table.display
+			- for(var x = 0;x<data.length;x++)
+				tr
+					td.display
+						|#{c_effects[data[x].type]}
+					td
+						|#{data[x].value}
+					td
+						button(onClick='remove('+x+')').
+							Remove
+		table
+			tr
+				td
+					select(id='f_type')
+						option(selected disabled).
+							Select
+						option(value='fire').
+							火炎
+						option(value='ice').
+							冷気
+						option(value='shock').
+							電撃
+						option(value='light').
+							光輝
+						option(value='dark').
+							邪毒
+						option(value='san').
+							精神
+						option(value='near').
+							白兵攻撃
+						option(value='far').
+							射撃攻撃
+						option(value='weapon').
+							武器攻撃
+						option(value='magic').
+							魔法攻撃
+						option(value='special').
+							特殊攻撃
+				td
+					input(id='f_value' type='text').shortvalue
+				td
+					button(onClick='add()').
+						ADD

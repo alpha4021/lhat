@@ -1,0 +1,13 @@
+body{
+	margin: 0px;
+}
+input.shortvalue {
+	width: 16px;
+	display: inline-block;
+	text-align: center;
+}
+.display{
+	border: 1px;
+	border-style: solid;
+	
+}

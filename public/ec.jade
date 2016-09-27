@@ -1,0 +1,351 @@
+doctype html
+
+html
+	head
+		title EnemyController
+		link(rel="stylesheet" type="text/css" href="controller.css")
+		script(src='jquery-3.1.0.js').
+		script(type="text/javascript").
+			const c_effects = {fire:'火炎',ice:'冷気',shock:'電撃',light:'光輝',dark:'邪毒',san:'精神',near:'白兵攻撃',far:'射撃攻撃',weapon:'武器攻撃',magic:'魔法攻撃',special:'特殊攻撃'};
+			var adatas = [];
+			//var edatas = [];
+			var showid = 0;
+			$(document).ready(function(){
+				$.post('./alist/e',function(data){
+					console.log(data);
+					adatas = data;
+					loadEdatas();
+				});
+				$(':checkbox').click(function(){
+					//alert('called');
+					var id = $(this).attr('id').split("_");
+					var x = id[2];
+					var cs = id[1].charAt(2);
+					//alert(cs.charAt(2));
+					set_bs_checkbox(x,cs);
+					//cast status effect
+				});
+			});
+			if(!!window.EventSource)
+				source = new EventSource('/sse/ae');
+			//listener source url
+			source.onopen = function(){
+				console.log('eventsource on open');
+			};
+			source.onmessage = function(re) {
+				//console.log(re);
+				console.log("/sse/ae/ on message");
+				var data = JSON.parse(re.data);
+				//console.log(re);
+				adatas = data.a;
+				loadEdatas();
+			};
+			window.onunload = function(){
+				//source.close();
+			};
+			function loadEdatas(){
+				for(var x = 0;x<adatas.length;x++){
+					loadEdata(x);
+					$('#cont'+x).removeClass('unload');
+				}
+				for(var x = adatas.length;x<12;x++){
+					$('#cont'+x).addClass('unload');
+				}
+			}
+			function loadEdata(x){
+				//constant enemy data
+				var adata = adatas[x];
+				var data = adatas[x].data;
+				$('#e_name_'+x).val(data.name);
+				$('#e_max_hp_'+x).val(data.max_hitpoint);
+				$('#e_CR_'+x).val(data.character_rank);
+				$('#e_lid_'+x).val(adata.type+adata.lid);
+				$('#e_tags_'+x).val(data.tags.toString());
+				$('#e_action_'+x).val(data.action);
+				$('#e_move_'+x).val(data.move);
+				$('#e_hate_'+x).val(data.hate);
+				$('#e_pdef_'+x).val(data.physical_defense);
+				$('#e_mdef_'+x).val(data.magic_defense);
+				$('#e_avoid_'+x).val(data.abl_avoid);
+				$('#e_resist_'+x).val(data.abl_resist);
+				//$('#e_str_'+x).val(data.str_value);
+				//$('#e_dex_'+x).val(data.dex_value);
+				//$('#e_pow_'+x).val(data.pow_value);
+				//$('#e_int_'+x).val(data.int_value);
+				//active data
+				$('#e_hp_'+x).val(adata.hp);
+				$('#e_effect_'+x).val(adata.effect);
+				//console.log('loadEdata, bs1='+adata.bs[1]);
+				$('#t_bs1_'+x)[0].checked = (adata.bs[1]==1);
+				$('#t_bs2_'+x)[0].checked = (adata.bs[2]==1);
+				$('#t_bs3_'+x)[0].checked = (adata.bs[3]==1);
+				$('#t_bs4_'+x)[0].checked = (adata.bs[4]==1);
+				$('#e_bs5_'+x).val(adata.bs[5]);
+				$('#t_bs6_'+x)[0].checked = (adata.bs[6]==1);
+				$('#t_bs7_'+x)[0].checked = (adata.bs[7]==1);
+				show_bs8(x);
+				$('#e_cs1_'+x).val(adata.cs[1]);
+				$('#e_cs3_'+x).val(adata.cs[3]);
+				$('#e_cs2_'+x).val('');
+				for(var i = 0;i<adata.cs[2].length;i++){
+					//alert(i);
+					$('#e_cs2_'+x).val($('#e_cs2_'+x).val()+'('+c_effects[adata.cs[2][i].type]+'):'+adata.cs[2][i].value+'/');
+				}
+				
+				
+			}
+			function effect_add(x){
+				adatas[x].effect++;
+				updateAlistToServer(x,'effect');
+			}
+			function effect_minus(x){
+				adatas[x].effect--;
+				updateAlistToServer(x,'effect');
+			}
+			function set_bs_checkbox(x,bs){
+				//only bs123467
+				//console.log(bs);
+				switch(bs){
+					case '1':case '2':case '3':case '4':case '6':case '7':
+					adatas[x].bs[bs] = ($('#t_bs'+bs+'_'+x)[0].checked?1:0);
+					//console.log('t_bs'+bs+'_'+x);
+					console.log(($('#t_bs'+bs+'_'+x)[0].checked?1:0));
+					updateAlistToServer(x,'bs'+bs);
+					break;
+					default:break;
+				}
+			}
+			function cleanup(x){
+				console.log('cleanup_'+x);
+				//var eff_bs5 = $('#e_bs5_'+x).val();
+				//var eff_cs1 = $('#e_cs1_'+x).val();
+				console.log('bs5='+adatas[x].bs[5]);
+				adatas[x].hp = adatas[x].hp * 1 - adatas[x].bs[5] * 1 + adatas[x].cs[1] * 1;
+				$('#e_hp_'+x).val(adatas[x].hp);
+				updateAlistToServer(x,'hp');
+				adatas[x].bs[5] = 0;
+				$('#e_bs5_'+x).val(0);
+				updateAlistToServer(x,'bs5');
+			}
+			function push_bs8(x){
+				if($('#e_bs8_'+x).val() == ''||$('#e_bs8_'+x).val()<=0)return;
+				else (adatas[x].bs[8]).push($('#e_bs8_'+x).val()*1);
+				$('#e_bs8_'+x).val(0);
+				show_bs8(x);
+				updateAlistToServer(x,'bs8')
+			}
+			function pop_bs8(x){
+				if((adatas[x].bs[8])===undefined||(adatas[x].bs[8]).length==0)return;
+				var eff = (adatas[x].bs[8]).shift();
+				console.log(adatas[x].bs[8]);
+				updateAlistToServer(x,'bs8');
+				show_bs8(x);
+				adatas[x].hp = adatas[x].hp * 1 - eff;
+				$('#e_hp_'+x).val(adatas[x].hp);
+				updateAlistToServer(x,'hp');
+			}
+			function show_bs8(x){//print bs8 array to textfield
+				if(adatas[x].bs[8].length>0)(adatas[x].bs[8]).sort(function(a, b){return b-a});//descending order
+				$('#e2_bs8_'+x).val((adatas[x].bs[8]).toString());
+			}
+			function esd(x){
+				//prompt popup window
+				window.open('./esd/'+adatas[x].id,'',"toolbar=0,menubar=0,status=0,resizable=0,width=300,height=500");
+				//alert(eid);
+			}
+			function acs2(x){
+				var lid = adatas[x].lid;
+				var type = adatas[x].type;
+				window.open('./acs2/'+adatas[x].type+'/'+adatas[x].lid+'/','',"location=0,toolbar=0,menubar=0,status=0,resizable=0,width=180,height=200");
+			}
+			function set_bs5(x){
+				adatas[x].bs[5] = $('#e_bs5_'+x).val();
+				updateAlistToServer(x,'bs5');
+			}
+			function set_cs1(x){
+				adatas[x].cs[1] = $('#e_cs1_'+x).val();
+				updateAlistToServer(x,'cs1');
+			}
+			function set_cs3(x){
+				adatas[x].cs[3] = $('#e_cs3_'+x).val();
+				updateAlistToServer(x,'cs3');
+			}
+			
+			function updateAlistToServer(x,item){
+				var value;
+				switch(item){
+					case 'effect':
+					case 'hp':
+						//adatas[x][item] = $('#e_'+item+'_'+x).val()
+						value = adatas[x][item];
+					break;
+					case 'bs1':
+					case 'bs2':
+					case 'bs3':
+					case 'bs4':
+					case 'bs6':
+					case 'bs7':
+					case 'bs8':
+					case 'bs5':
+						//console.log(adatas[x].bs[item.charAt(2)]);
+						value = adatas[x].bs[item.charAt(2)];
+						break;
+					case 'cs3':
+						value = adatas[x].cs[3];
+					break;
+					case 'cs1':
+						value = adatas[x].cs[1];
+				}
+				//update alist
+				console.log("update "+item+" "+value);
+				
+				$.post('./update/e/'+x+'/',{item:item,value:value});
+			}
+	body
+		br
+		- for(var x=0;x<12;x++)
+			div(id='cont'+x).container.ec.unload
+				table(id='table0_'+x).value
+					tr
+						td
+							|CR:
+							input(id='e_CR_'+x disabled type='text').shortvalue
+						td
+							|LID 
+							input(id='e_lid_'+x disabled type='text').shortvalue
+						td(colspan=2)
+							input(id='e_name_'+x disabled type='text').longvalue
+				table(id='table0a_'+x).value
+					tr
+						td
+							|HP:
+							input(id='e_hp_'+x type='text').shortvalue
+							|/
+							input(id='e_max_hp_'+x disabled type='text').shortvalue
+						td(colspan=2)
+							|タグ
+							input(id='e_tags_'+x disabled type='text').quitelongvalue
+				table(id='table1_'+x).value
+					tr
+						td(width='25%')
+							|因果力
+							br
+							input(id='e_effect_'+x type='text').value
+							button.mini(onClick='effect_add('+x+')') +
+							button.mini(onClick='effect_minus('+x+')') -
+						td(width='25%')
+							|行動力
+							br
+							input(id='e_action_'+x disabled type='text').value
+						td(width='25%')
+							|移動力
+							br
+							input(id='e_move_'+x disabled type='text').value
+						td(width='25%')
+							|ヘイト倍率
+							br
+							input(id='e_hate_'+x disabled type='text').value
+					tr
+						td
+							|物理防御力
+							br
+							input(id='e_pdef_'+x disabled type='text').value
+						td
+							|魔法防御力
+							br
+							input(id='e_mdef_'+x disabled type='text').value
+						td
+							|回避値
+							br
+							input(id='e_avoid_'+x disabled type='text').value
+						td
+							|抵抗値
+							br
+							input(id='e_resist_'+x disabled type='text').value
+				table(id='table2_'+x).value
+					tr.lock
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs1_'+x)
+								div.slider.red
+									|萎縮
+									br
+									|萎縮
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs2_'+x)
+								div.slider.red
+									|放心
+									br
+									|放心
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs3_'+x)
+								div.slider.red
+									|硬直
+									br
+									|硬直
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs4_'+x)
+								div.slider.red
+									|惑乱
+									br
+									|惑乱
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs6_'+x)
+								div.slider.red
+									|重篤
+									br
+									|重篤
+						td.switch
+							label.switch
+								input(type='checkbox' id='t_bs7_'+x)
+								div.slider.red
+									|慢心
+									br
+									|慢心
+						td.switch
+							button(onClick='esd('+x+')' class='switch').
+								Skill
+								Drop
+				table(id='table3_'+x).value
+					tr.lock
+						td.border
+							|衰弱
+							input(type='text' id='e_bs5_'+x).shortvalue
+							br
+							button(onClick='set_bs5('+x+')').
+								set
+						td.border
+							|再生
+							input(type='text' id='e_cs1_'+x).shortvalue
+							br
+							button(onClick='set_cs1('+x+')').
+								set
+						td.border
+							|追擊
+							input(type='text' id='e_bs8_'+x).shortvalue
+							br
+							button(onClick='push_bs8('+x+')').
+								push
+						td.border
+							|障壁
+							input(type='text' id='e_cs3_'+x).shortvalue
+							br
+							button(onClick='set_cs3('+x+')').
+								set
+						td
+							button(onClick='cleanup('+x+')').
+								cleanup
+					tr
+						td(colspan=4)
+							|追擊
+							input(type='text' disabled id='e2_bs8_'+x).quitelongvalue
+							button(onClick='pop_bs8('+x+')').
+								pop
+						td
+							button(onClick='acs2('+x+')').
+								輕減
+				textarea(type='text' disabled id='e_cs2_'+x).cs2
