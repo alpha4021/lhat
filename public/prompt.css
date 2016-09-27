@@ -30,6 +30,9 @@ input.shortvalue {
 .backred{
 	background-color: #F00;
 }
+.backgreen{
+	background-color: #0F0;
+}
 .inline{
 	display:inline;
 }
@@ -53,3 +56,4 @@ input.shortvalue {
 .left{
 	text-align:left;
 }
+

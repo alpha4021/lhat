@@ -91,7 +91,7 @@ app.get('/:p(esd|csd|ccu|cit)/:id(\\d+)',function(req,res){
 		var reply;
 		var data = result[0];
 		switch(p.substring(1)){
-			case "sd":reply = jade.renderFile(p_public+'/'+p+'.jade',{name:data.name,skills:data.skills,drop:data.drop});break;
+			case "sd":reply = jade.renderFile(p_public+'/xsd.jade',{name:data.name,type:p.charAt(0),skills:data.skills,drop:data.drop});break;
 			case "cu":reply = jade.renderFile(p_public+'/'+p+'.jade',{name:data.name,connections:data.connections,unions:data.unions});break;
 			case "it":reply = jade.renderFile(p_public+'/'+p+'.jade',{name:data.name,equipments:[data.hand1,data.hand2,data.armor,data.support_item1,data.support_item2,data.support_item3,data.bag],items:data.items});break;
 		}

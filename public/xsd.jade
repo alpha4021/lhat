@@ -1,0 +1,80 @@
+doctype html
+
+html
+	head
+		title Skills & Drops
+		link(rel="stylesheet" type="text/css" href="/prompt.css")
+		- var t = {c:'Character',e:'Enemy'};
+		script(src='/jquery-3.1.0.js').
+		script(type="text/javascript").
+			$(document).ready(function(){
+				$('div').click(function(){
+					
+					if($('#table_'+$(this).attr('id')).hasClass('unload')){
+						$('#table_'+$(this).attr('id')).removeClass('unload');
+					} else {
+						$('#table_'+$(this).attr('id')).addClass('unload');
+					}
+				});
+			});
+	body
+		div.display.item
+			div.left
+				|#{name}(#{t[type]})
+			div.flex
+			div.right
+				|Skill Number: 
+				|#{skills.length}
+		- for(var x = 0;x<skills.length;x++)
+			div(id=''+x).display.item
+				div.left
+					|#{skills[x].name}
+				div.flex
+				div.right
+					|#{skills[x].type}
+			table(id='table_'+x).display.container.unload
+				tr
+					td
+						|SR: #{skills[x].skill_rank}/#{skills[x].skill_max_rank}
+					td(colspan=3)
+						|#{skills[x].tags.toString()}
+				tr
+					td
+						|#{skills[x].name}
+					td
+						|#{skills[x].type}
+					td
+						|#{skills[x].timing}
+					td
+						|#{skills[x].roll}
+						//target range cost limit
+				tr
+					td
+						|#{skills[x].target}
+					td
+						|#{skills[x].range}
+					td
+						|#{skills[x].cost}
+					td
+						|#{skills[x].limit}
+				tr
+					td(colspan=4)
+						|#{skills[x].function}
+		- if(drop)
+			table.display.container
+				tr
+					td
+						|adviced_value
+					td
+						|#{drop.adviced_value}
+				tr
+					td
+						|fixed
+					td
+						|#{drop.fixed}
+				- for(var x = 1;x<7;x++)
+					tr
+						td
+							|#{x}
+						td
+							|#{drop.roll[x]}
