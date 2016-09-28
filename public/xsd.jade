@@ -30,17 +30,15 @@ html
 				div.left
 					|#{skills[x].name}
 				div.flex
-				div.right
+				div.right(class=(skills[x].type=='戦闘'?'backred':'backgreen'))
 					|#{skills[x].type}
 			table(id='table_'+x).display.container.unload
 				tr
-					td
-						|SR: #{skills[x].skill_rank}/#{skills[x].skill_max_rank}
-					td(colspan=3)
+					td(colspan=4)
 						|#{skills[x].tags.toString()}
 				tr
 					td
-						|#{skills[x].name}
+						|SR: #{skills[x].skill_rank}/#{skills[x].skill_max_rank}
 					td
 						|#{skills[x].type}
 					td
