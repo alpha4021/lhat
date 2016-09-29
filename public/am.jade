@@ -1,0 +1,145 @@
+doctype html
+
+html
+	head
+		title AList Manager
+		link(rel="stylesheet" type="text/css" href="am.css")
+		script(src='jquery-3.1.0.js').
+		script(type="text/javascript").
+			var adatas = [];
+			$(document).ready(function(){
+				$.post('./alist/a',function(data){
+					console.log(data);
+					adatas = data;
+					loadEdatas();
+				});
+				if(!!window.EventSource)
+				source = new EventSource('/sse/a');
+				//listener source url
+				source.onopen = function(){
+					console.log('eventsource on open');
+				};
+				source.onmessage = function(re) {
+					//console.log(re);
+					console.log("/sse/a/ on message");
+					var data = JSON.parse(re.data);
+					//console.log(re);
+					adatas = data.a;
+					loadEdatas();
+				};
+			});
+			function add(){
+				var type = $('#s_new_type').val();
+				var id = $('#i_new_id').val();
+				if(id=="" || id == undefined){alert('Please enter ID');return;}
+				$.post('/add/'+type+'/'+id);
+			}
+			function minus(x){
+				alert(x);
+			}
+			function loadEdatas(){
+				for(var x = 0;x<adatas.length;x++){
+					loadEdata(x);
+					$('#cont_'+x).removeClass('unload');
+					$('#cont2_'+x).removeClass('unload');
+					
+				}
+				for(var x = adatas.length;x<24;x++){
+					$('#cont_'+x).addClass('unload');
+					$('#cont2_'+x).addClass('unload');
+				}
+			}
+			function loadEdata(x){
+				var adata = adatas[x];
+				var data = adatas[x].data;
+				$('#f_name_'+x).val(adata.name);
+				$('#f_action_'+x).val(adata.action);
+				$('#f_type_'+x).val(adata.type+adata.lid);
+				$('#f_status_'+x).val(adata.status);
+				if(adata.type=='c'){
+					$('#f_hate_'+x).val(adata.hate);
+					$('#f_fatique_'+x).val(adata.fatique);
+				} else {
+					$('#f_hate_'+x).prop('disabled',true);
+					$('#f_fatique_'+x).prop('disabled',true);
+				}
+				$('#f_effect_'+x).val(adata.effect);
+				$('#f_HP_'+x).val(adata.hp);
+				$('#f_MAX_HP_'+x).val(data.max_hitpoint);
+				
+			}
+	body
+		div
+			|add
+			select(id='s_new_type')
+				option(value='c').
+					Character
+				option(value='e').
+					Enemy
+			input(type='text' id='i_new_id').value
+			button(onClick='add()').
+				ADD
+		table
+			tr
+				td
+					|ID
+				td
+					|Type
+				td
+				td(width=40)
+					|行動力
+				td(width=40)
+					|疲労
+				td(width=40)
+					|ヘイト
+				td(width=40)
+					|因果力
+				td
+					|HP
+				td
+					|行動
+				td
+			- for(var x = 0;x<24;x++)
+				tr(id='cont_'+x).unload
+					td
+						|#{x}
+					td
+						input(id='f_name_'+x disabled).longvalue
+					td
+						input(id='f_type_'+x disabled).shortvalue
+					td
+						input(id='f_action_'+x disabled).shortvalue
+					td
+						input(id='f_fatique_'+x).shortvalue
+					td
+						button.mini.
+							+
+						input(id='f_hate_'+x).shortvalue
+						button.mini.
+							-
+					td
+						button.mini.
+							+
+						input(id='f_effect_'+x).shortvalue
+						button.mini.
+							-
+					td
+						input(id='f_HP_'+x).shortvalue
+						|/
+						input(id='f_MAX_HP_'+x disabled).shortvalue
+					td
+						input(id='f_status_'+x disabled).shortvalue
+					td
+						button(onClick='minus('+x+')').
+							Delete
+				tr(id='cont2_'+x).unload
+					td(colspan=3)
+					td.display
+						|Init
+					td.display
+						|Move
+					td.display
+						|Minor
+					td.display
+						|Major
+					
