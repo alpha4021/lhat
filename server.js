@@ -36,6 +36,11 @@ app.get('/test',function(req,res){
 	res.send(reply);
 	
 });
+app.get('/am',function(req,res){
+	var _fn = "get am";
+	var reply = jade.renderFile(p_public+'/am.jade');
+	res.send(reply);
+});
 app.get(/ec$/,function(req,res){
 	var _fn = "get ec";
 	log(_fn,"");
@@ -50,11 +55,20 @@ app.get(/cc$/,function(req,res){
 	var reply = jade.renderFile(p_public+'/cc.jade');
 	res.send(reply);
 });
-app.post('/alist/:type([ce])',function(req,res){
+app.post('/alist/:type([ace])',function(req,res){
 	var _fn = "post alist";
-	log(_fn,req.params.type);
+	var type = req.params.type;
+	log(_fn,type);
 	//var data = {a:alist.filter(function(i){return i.type==req.params.type;})};
-	res.send(alist.filter(function(i){return i.type==req.params.type;}));
+	switch(type){
+		case 'a':
+			res.send(alist);
+			break;
+		case 'c':
+		case 'e':
+			res.send(alist.filter(function(i){return i.type==type;}));
+			break;
+	}
 });
 /*
 app.post('/:type([ce])/:id(\\d+)',function(req,res){
@@ -169,9 +183,11 @@ app.post('/add/:type/:id(\\d+)',function(req,res){
 						lid:(ac.c++),
 						hp:data.max_hitpoint,
 						effect:data.effect,
+						fatique:0,
 						cs:[null,0,[],0],//regen,reduc,wall
 						bs:[null,false,false,false,false,0,false,false,[]],
-						os:{},
+						ls:[null,0,[],false,false],
+						os:[false,false,false,false,false,false,'1','U'],
 						data:data
 						});//index: i in clink
 					callback(null,'c');
@@ -196,9 +212,11 @@ app.post('/add/:type/:id(\\d+)',function(req,res){
 						lid:(ac.e++),
 						hp:data.max_hitpoint,
 						effect:data.effect,
+						fatique:0,
 						cs:[null,0,[],0],//regen,reduc,wall
 						bs:[null,false,false,false,false,0,false,false,[]],
-						os:{},
+						ls:[null,0,[],false,false],
+						os:[false,false,false,false,false,false,'1','U'],
 						data:data
 					});//index: i in elink
 					callback(null,'e');
@@ -318,8 +336,8 @@ emitter.on('ac',()=>{
 emitter.on('a',()=>{
 	log("emitter on",'a');
 	var data = {a:alist};
-	for(var x = 0;x<sse_ress.length;x++){
-		sse_ress[x].write('data:'+JSON.stringify(data)+'\n\n');
+	for(var x = 0;x<sse_ress['a'].length;x++){
+		if(sse_ress['a'][x])sse_ress['a'][x].write('data:'+JSON.stringify(data)+'\n\n');
 	}
 });
 
