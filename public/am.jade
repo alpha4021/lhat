@@ -6,6 +6,8 @@ html
 		link(rel="stylesheet" type="text/css" href="am.css")
 		script(src='jquery-3.1.0.js').
 		script(type="text/javascript").
+			const bs_name = [null,'萎縮','放心','硬直','惑乱','衰弱','重篤','慢心','追擊'];
+			const cs_name = [null,'再生','輕減','障壁'];
 			var adatas = [];
 			$(document).ready(function(){
 				$.post('./alist/a',function(data){
@@ -68,6 +70,27 @@ html
 				$('#f_HP_'+x).val(adata.hp);
 				$('#f_MAX_HP_'+x).val(data.max_hitpoint);
 				
+				if(adata.bs[1] == 1)$('#f_BS1_'+x).addClass('backred');
+				else $('#f_BS1_'+x).removeClass('backred');
+				if(adata.bs[2] == 1)$('#f_BS2_'+x).addClass('backred');
+				else $('#f_BS2_'+x).removeClass('backred');
+				if(adata.bs[3] == 1)$('#f_BS3_'+x).addClass('backred');
+				else $('#f_BS3_'+x).removeClass('backred');
+				if(adata.bs[4] == 1)$('#f_BS4_'+x).addClass('backred');
+				else $('#f_BS4_'+x).removeClass('backred');
+				if(adata.bs[6] == 1)$('#f_BS6_'+x).addClass('backred');
+				else $('#f_BS6_'+x).removeClass('backred');
+				if(adata.bs[7] == 1)$('#f_BS7_'+x).addClass('backred');
+				else $('#f_BS7_'+x).removeClass('backred');
+				
+				if(adata.bs[5] != 0){
+					$('#f_BS5_'+x).addClass('backred');
+					$('#f_BS5_'+x).text(bs_name[5]+':'+adata.bs[5]);
+				} else {
+					$('#f_BS5_'+x).removeClass('backred');
+					$('#f_BS5_'+x).text(bs_name[5]);
+				}
+				
 			}
 	body
 		div
@@ -115,29 +138,50 @@ html
 							|/
 							input(id='f_MAX_HP_'+x disabled).shortvalue
 						td
-							|BS
-						td
-							|CS
-						td
-							|LS
-						td
-							|OS
-						td
 							button(onClick='minus('+x+')').
 								Delete
 				table
 					tr
 						td
-							|Before
+							|時
+						td.display
+							|未
+						td.display
+							|待
+						td.display
+							|済
+						td.display
+							|イ
+						td.display
+							|ム
+						td.display
+							|マ
+						td.display
+							|メ
+						
+					tr
 						td
-							|Wait
-						td.display
-							|Init
-						td.display
-							|Move
-						td.display
-							|Minor
-						td.display
-							|Major
+							|BS
+						td(id='f_BS1_'+x)
+							|萎縮
+						td(id='f_BS2_'+x)
+							|放心
+						td(id='f_BS3_'+x)
+							|硬直
+						td(id='f_BS4_'+x)
+							|惑乱
+						td(id='f_BS5_'+x)
+							|衰弱
+						td(id='f_BS6_'+x)
+							|重篤
+						td(id='f_BS7_'+x)
+							|慢心
+						td(id='f_BS8_'+x)
+							|追擊
+					tr
 						td
-							|After
+							|CS
+						td(id='f_CS1_'+x)
+							|再生
+						td(id='f_CS3_'+x)
+							|障壁
