@@ -36,6 +36,7 @@ html
 			}
 			function minus(x){
 				alert(x);
+				$.post('/remove/alid/'+x,{type:adatas[x].type});
 			}
 			function loadEdatas(){
 				for(var x = 0;x<adatas.length;x++){
@@ -79,67 +80,64 @@ html
 			input(type='text' id='i_new_id').value
 			button(onClick='add()').
 				ADD
-		table
-			tr
-				td
-					|ID
-				td
-					|Type
-				td
-				td(width=40)
-					|行動力
-				td(width=40)
-					|疲労
-				td(width=40)
-					|ヘイト
-				td(width=40)
-					|因果力
-				td
-					|HP
-				td
-					|行動
-				td
-			- for(var x = 0;x<24;x++)
-				tr(id='cont_'+x).unload
-					td
-						|#{x}
-					td
-						input(id='f_name_'+x disabled).longvalue
-					td
-						input(id='f_type_'+x disabled).shortvalue
-					td
-						input(id='f_action_'+x disabled).shortvalue
-					td
-						input(id='f_fatique_'+x).shortvalue
-					td
-						button.mini.
-							+
-						input(id='f_hate_'+x).shortvalue
-						button.mini.
-							-
-					td
-						button.mini.
-							+
-						input(id='f_effect_'+x).shortvalue
-						button.mini.
-							-
-					td
-						input(id='f_HP_'+x).shortvalue
-						|/
-						input(id='f_MAX_HP_'+x disabled).shortvalue
-					td
-						input(id='f_status_'+x disabled).shortvalue
-					td
-						button(onClick='minus('+x+')').
-							Delete
-				tr(id='cont2_'+x).unload
-					td(colspan=3)
-					td.display
-						|Init
-					td.display
-						|Move
-					td.display
-						|Minor
-					td.display
-						|Major
-					
+		- for(var x = 0;x<24;x++)
+			div(id='cont_'+x).unload.display
+				table
+					tr
+						td
+							|#{x}
+						td
+							input(id='f_type_'+x disabled).shortvalue
+						td
+							input(id='f_name_'+x disabled).longvalue
+						td
+							input(id='f_action_'+x disabled).shortvalue
+						td
+							button.mini.
+								+
+							input(id='f_fatique_'+x).shortvalue
+							button.mini.
+								-
+						td
+							button.mini.
+								+
+							input(id='f_hate_'+x).shortvalue
+							button.mini.
+								-
+						td
+							button.mini.
+								+
+							input(id='f_effect_'+x).shortvalue
+							button.mini.
+								-
+						td
+							input(id='f_HP_'+x).shortvalue
+							|/
+							input(id='f_MAX_HP_'+x disabled).shortvalue
+						td
+							|BS
+						td
+							|CS
+						td
+							|LS
+						td
+							|OS
+						td
+							button(onClick='minus('+x+')').
+								Delete
+				table
+					tr
+						td
+							|Before
+						td
+							|Wait
+						td.display
+							|Init
+						td.display
+							|Move
+						td.display
+							|Minor
+						td.display
+							|Major
+						td
+							|After

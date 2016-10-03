@@ -70,25 +70,6 @@ app.post('/alist/:type([ace])',function(req,res){
 			break;
 	}
 });
-/*
-app.post('/:type([ce])/:id(\\d+)',function(req,res){
-	//'/:type([ce])/:id(\d+)'
-	var _fn = "post";
-	//type = 'c' or 'e'
-	//id = \d+
-	var type = req.params.type;
-	var id = req.params.id;
-	log(_fn,type+id);
-	//TODO: ensure return data
-	internet.getEnemy(id,function(err,data){
-		if(err){
-			log(_fn,err);
-			res.send({status:"error"});
-		}
-		else res.send(data);
-	});
-});
-*/
 app.get('/:p(esd|csd|ccu|cit)/:id(\\d+)',function(req,res){
 	var _fn = "get";
 	var p = req.params.p;
@@ -116,39 +97,61 @@ app.get('/:p(esd|csd|ccu|cit)/:id(\\d+)',function(req,res){
 	
 });
 
-app.get('/acs2/:type([ce])/:lid(\\d+)/',function(req,res){
-	var _fn = 'acs2';
+app.get('/:a(acs2|als2)/:type([ce])/:lid(\\d+)/',function(req,res){
+	var _fn = req.params.a;
 	var type=req.params.type;
 	var lid = req.params.lid;
 	log(_fn,type+lid);
 	var pos = alist.map(function(e){return (e.type+e.lid+'');}).indexOf(type+lid+'');
 	if(pos == -1)res.sendStatus(404);
-	var reply = jade.renderFile(p_public+'/acs2.jade',{data:alist[pos].cs[2],pos:pos});
+	var data;
+	switch(_fn){
+		case "acs2":data = {data:alist[pos].cs[2],pos:pos};break;
+		case "als2":data = {data:alist[pos].ls[2],pos:pos};break;
+	}
+	var reply = jade.renderFile(p_public+'/'+a+'.jade',data);
 	res.send(reply);
 	
 });
-app.post('/acs2/:type([ce])/:lid(\\d+)/:cmd([ar])',function(req,res){
+app.post('/:a(acs2|als2)/:type([ce])/:lid(\\d+)/:cmd([ar])',function(req,res){
 	var type=req.params.type;
 	var lid = req.params.lid;
 	var cmd = req.params.cmd;
 	var pos = alist.map(function(e){return (e.type+e.lid+'');}).indexOf(type+lid+'');
-	var _fn = 'acs2';
+	var _fn = req.params.a;
 	switch(cmd){
 		case 'a':
-			var cs_type = req.body.type;
-			var cs_value = req.body.value;
-			log(_fn,type+lid+'->'+pos+','+cmd+' '+cs_type+':'+cs_value);
-			if(alist[pos].cs[2]===undefined)alist[pos].cs[2] = [];
-			alist[pos].cs[2].push({type:cs_type,value:cs_value});
-			log(_fn,'alist[pos].cs[2].length='+alist[pos].cs[2].length);
+			var s_type = req.body.type;
+			var s_value = req.body.value;
+			log(_fn,type+lid+'->'+pos+','+cmd+' '+s_type+':'+s_value);
+			switch(_fn){
+				case "acs2":
+					if(alist[pos].cs[2]===undefined)alist[pos].cs[2] = [];
+					alist[pos].cs[2].push({type:s_type,value:s_value});
+					log(_fn,'alist[pos].cs[2].length='+alist[pos].cs[2].length);
+				break;
+				case "als2":
+					if(alist[pos].ls[2]===undefined)alist[pos].ls[2] = [];
+					alist[pos].ls[2].push({type:s_type,value:s_value});
+					log(_fn,'alist[pos].ls[2].length='+alist[pos].ls[2].length);
+					break;
+			}
 			break;
 		case 'r':
 			//if(alist[pos].cs[2]===undefined)alist[pos].cs[2] = [];
-			var cs2id = req.body.cs2id;
-			log(_fn,type+lid+'->'+pos+','+cmd+' '+cs2id);
-			alist[pos].cs[2].splice(cs2id,1);
-			if(alist[pos].cs[2].length===undefined)alist[pos].cs[2] = [];
-			log(_fn,'alist[pos].cs[2].length='+alist[pos].cs[2].length);
+			var s2id = req.body.s2id;
+			log(_fn,type+lid+'->'+pos+','+cmd+' '+s2id);
+			switch(_fn){
+				case "acs2":
+					alist[pos].cs[2].splice(s2id,1);
+					if(alist[pos].cs[2].length===undefined)alist[pos].cs[2] = [];
+					log(_fn,'alist[pos].cs[2].length='+alist[pos].cs[2].length);
+				break;
+				case "als2":
+					alist[pos].ls[2].splice(s2id,1);
+					if(alist[pos].ls[2].length===undefined)alist[pos].ls[2] = [];
+					log(_fn,'alist[pos].ls[2].length='+alist[pos].ls[2].length);
+			}
 			break;
 		
 	}
@@ -183,11 +186,10 @@ app.post('/add/:type/:id(\\d+)',function(req,res){
 						lid:(ac.c++),
 						hp:data.max_hitpoint,
 						effect:data.effect,
-						fatique:0,
 						cs:[null,0,[],0],//regen,reduc,wall
 						bs:[null,false,false,false,false,0,false,false,[]],
 						ls:[null,0,[],false,false],
-						os:[false,false,false,false,false,false,'1','U'],
+						os:[false,false,false,false,false,false,1,'U'],
 						data:data
 						});//index: i in clink
 					callback(null,'c');
@@ -212,11 +214,10 @@ app.post('/add/:type/:id(\\d+)',function(req,res){
 						lid:(ac.e++),
 						hp:data.max_hitpoint,
 						effect:data.effect,
-						fatique:0,
 						cs:[null,0,[],0],//regen,reduc,wall
 						bs:[null,false,false,false,false,0,false,false,[]],
-						ls:[null,0,[],false,false],
-						os:[false,false,false,false,false,false,'1','U'],
+						ls:[null,0,[],false,false],//fatique,weak,KO,death
+						os:[false,false,false,false,false,false,1,'U'],
 						data:data
 					});//index: i in elink
 					callback(null,'e');
@@ -231,7 +232,15 @@ app.post('/add/:type/:id(\\d+)',function(req,res){
 		emitter.emit('a'+result[0]);
 	});
 });
-
+app.post('/remove/alid/:alid(\\d+)',function(req,res){
+	var _fn = "post:remove";
+	var alid = req.params.alid;
+	log(_fn,'alid='+alid);
+	alist.splice(alid,1);
+	emitter.emit('a');
+	emitter.emit('a'+req.body.type);
+	
+});
 app.post('/remove/:type/:lid(\\d+)',function(req,res){
 	var _fn = "post:remove";
 	var lid = req.params.lid;//list id by its type: elist id or clist id
