@@ -90,6 +90,19 @@ html
 					$('#f_BS5_'+x).removeClass('backred');
 					$('#f_BS5_'+x).text(bs_name[5]);
 				}
+				if(adata.bs[8].length > 0){
+					$('#f_BS8_'+x).addClass('backred');
+					$('#f_BS8_'+x).text(bs_name[8]+':'+Math.max.apply(null,adata.bs[8]));
+				} else {
+					$('#f_BS8_'+x).removeClass('backred');
+					$('#f_BS8_'+x).text(bs_name[8]);
+				}
+				
+			}
+			function sort_id(){
+			//$('div.f_container:not(.unload)').attr('id')
+			}
+			function sort_action(){
 				
 			}
 	body
@@ -103,12 +116,36 @@ html
 			input(type='text' id='i_new_id').value
 			button(onClick='add()').
 				ADD
+			button(onClick='sort_id()').
+				Sort by ID
+			button(onClick='sort_action()').
+				Sort by Action
 		- for(var x = 0;x<24;x++)
-			div(id='cont_'+x).unload.display
+			div(id='cont_'+x).unload.display.f_container
 				table
 					tr
 						td
-							|#{x}
+							|ID
+						td
+							|T
+						td
+							|Name
+						td
+							|A
+						td
+							|F
+						td
+							|H
+						td
+							|E
+						td
+							|HP
+					tr
+						td
+							label(id=x).id.
+								yolo
+							label(id=(x+1)).id.
+								#{x}
 						td
 							input(id='f_type_'+x disabled).shortvalue
 						td
@@ -145,19 +182,17 @@ html
 						td
 							|時
 						td.display
-							|未
+							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x)
+							label(for="f_toki_B_"+x).
+								未
 						td.display
-							|待
+							input(type="radio" value="W" name="toki"+x id="f_toki_W_"+x)
+							label(for="f_toki_W_"+x).
+								待
 						td.display
-							|済
-						td.display
-							|イ
-						td.display
-							|ム
-						td.display
-							|マ
-						td.display
-							|メ
+							input(type="radio" value="F" name="toki"+x id="f_toki_F_"+x)
+							label(for="f_toki_F_"+x).
+								済
 						
 					tr
 						td

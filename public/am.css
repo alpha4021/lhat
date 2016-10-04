@@ -79,3 +79,9 @@ button.mini{
 	border: 1px;
 	padding: 0px;
 }
+input[type='radio']{
+	display:none;
+}
+input:checked + label{
+	background-color: #88FF88;
+}
