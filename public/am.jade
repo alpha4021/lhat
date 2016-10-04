@@ -90,6 +90,21 @@ html
 					$('#f_BS5_'+x).removeClass('backred');
 					$('#f_BS5_'+x).text(bs_name[5]);
 				}
+				if(adata.cs[1] != 0){
+					$('#f_CS1_'+x).addClass('backgreen');
+					$('#f_CS1_'+x).text(cs_name[1]+':'+adata.cs[1]);
+				} else {
+					$('#f_CS1_'+x).removeClass('backgreen');
+					$('#f_CS1_'+x).text(cs_name[1]);
+				}
+				if(adata.cs[3] != 0){
+					$('#f_CS3_'+x).addClass('backgreen');
+					$('#f_CS3_'+x).text(cs_name[3]+':'+adata.cs[3]);
+				} else {
+					$('#f_CS3_'+x).removeClass('backgreen');
+					$('#f_CS3_'+x).text(cs_name[3]);
+				}
+				
 				if(adata.bs[8].length > 0){
 					$('#f_BS8_'+x).addClass('backred');
 					$('#f_BS8_'+x).text(bs_name[8]+':'+Math.max.apply(null,adata.bs[8]));
@@ -97,12 +112,6 @@ html
 					$('#f_BS8_'+x).removeClass('backred');
 					$('#f_BS8_'+x).text(bs_name[8]);
 				}
-				
-			}
-			function sort_id(){
-			//$('div.f_container:not(.unload)').attr('id')
-			}
-			function sort_action(){
 				
 			}
 	body
@@ -116,15 +125,11 @@ html
 			input(type='text' id='i_new_id').value
 			button(onClick='add()').
 				ADD
-			button(onClick='sort_id()').
-				Sort by ID
-			button(onClick='sort_action()').
-				Sort by Action
 		- for(var x = 0;x<24;x++)
-			div(id='cont_'+x).unload.display.f_container
+			div(id='cont_'+x).unload.display.container
 				table
 					tr
-						td
+						td(width=30)
 							|ID
 						td
 							|T
@@ -142,9 +147,7 @@ html
 							|HP
 					tr
 						td
-							label(id=x).id.
-								yolo
-							label(id=(x+1)).id.
+							label(id=x).
 								#{x}
 						td
 							input(id='f_type_'+x disabled).shortvalue
@@ -177,24 +180,24 @@ html
 						td
 							button(onClick='minus('+x+')').
 								Delete
-				table
-					tr
+				table(id='t_S_'+x)
+					tr.fixedwidth
 						td
 							|時
 						td.display
-							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x)
+							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x checked)
 							label(for="f_toki_B_"+x).
-								未
+								未行動
 						td.display
 							input(type="radio" value="W" name="toki"+x id="f_toki_W_"+x)
 							label(for="f_toki_W_"+x).
-								待
+								待機中
 						td.display
 							input(type="radio" value="F" name="toki"+x id="f_toki_F_"+x)
 							label(for="f_toki_F_"+x).
-								済
+								行動済
 						
-					tr
+					tr.fixedwidth
 						td
 							|BS
 						td(id='f_BS1_'+x)

@@ -20,7 +20,7 @@ input{
 	
 }
 .container{
-	width:100%;
+	width:800px;
 }
 .unload{
 	display: none;
@@ -81,7 +81,13 @@ button.mini{
 }
 input[type='radio']{
 	display:none;
+	height:0px;
+	width:0px;
 }
 input:checked + label{
-	background-color: #88FF88;
+	background-color: #AAD;
+	width:100%;
+}
+tr.fixedwidth td{
+	width:50px;
 }
