@@ -191,17 +191,17 @@ html
 			}
 			function set_bs5(x){
 				if(!/^\d+/.test($('#e_bs5_'+x).val()))return;
-				adatas[x].bs[5] = $('#e_bs5_'+x).val();
+				adatas[x].bs[5] = $('#e_bs5_'+x).val() * 1;
 				updateAlistToServer(x,'bs5');
 			}
 			function set_cs1(x){
 				if(!/^\d+/.test($('#e_cs1_'+x).val()))return;
-				adatas[x].cs[1] = $('#e_cs1_'+x).val();
+				adatas[x].cs[1] = $('#e_cs1_'+x).val() * 1;
 				updateAlistToServer(x,'cs1');
 			}
 			function set_cs3(x){
 				if(!/^\d+/.test($('#e_cs3_'+x).val()))return;
-				adatas[x].cs[3] = $('#e_cs3_'+x).val();
+				adatas[x].cs[3] = $('#e_cs3_'+x).val() * 1;
 				updateAlistToServer(x,'cs3');
 			}
 			
@@ -234,7 +234,7 @@ html
 				//update alist
 				console.log("update "+item+" "+value);
 				
-				$.post('./update/c/'+x+'/',{item:item,value:value});
+				$.post('./update/c/'+adatas[x].lid+'/',{item:item,value:value});
 			}
 	body
 		br
