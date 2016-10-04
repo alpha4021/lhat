@@ -135,7 +135,7 @@ html
 				updateAlistToServer(x,'bs8')
 			}
 			function pop_bs8(x){
-				if((adatas[x].bs[8])===undefined||(adatas[x].bs[8]).length==0)return;
+				if((adatas[x].bs[8])===undefined||(adatas[x].bs[8]).length==0||!/^\d+/.test($('#e_bs8_'+x).val()))return;
 				var eff = (adatas[x].bs[8]).shift();
 				console.log(adatas[x].bs[8]);
 				updateAlistToServer(x,'bs8');
@@ -159,14 +159,17 @@ html
 				window.open('./acs2/'+adatas[x].type+'/'+adatas[x].lid+'/','',"location=0,toolbar=0,menubar=0,status=0,resizable=0,width=180,height=200");
 			}
 			function set_bs5(x){
+				if(!/^\d+/.test($('#e_bs5_'+x).val()))return;
 				adatas[x].bs[5] = $('#e_bs5_'+x).val();
 				updateAlistToServer(x,'bs5');
 			}
 			function set_cs1(x){
+				if(!/^\d+/.test($('#e_cs1_'+x).val()))return;
 				adatas[x].cs[1] = $('#e_cs1_'+x).val();
 				updateAlistToServer(x,'cs1');
 			}
 			function set_cs3(x){
+				if(!/^\d+/.test($('#e_cs3_'+x).val()))return;
 				adatas[x].cs[3] = $('#e_cs3_'+x).val();
 				updateAlistToServer(x,'cs3');
 			}

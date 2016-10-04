@@ -152,7 +152,7 @@ html
 				updateAlistToServer(x,'bs5');
 			}
 			function push_bs8(x){
-				if($('#e_bs8_'+x).val() == ''||$('#e_bs8_'+x).val()<=0)return;
+				if($('#e_bs8_'+x).val() == ''||$('#e_bs8_'+x).val()<=0||!/^\d+/.test($('#e_bs8_'+x).val()))return;
 				else (adatas[x].bs[8]).push($('#e_bs8_'+x).val()*1);
 				$('#e_bs8_'+x).val(0);
 				show_bs8(x);
@@ -190,14 +190,17 @@ html
 				
 			}
 			function set_bs5(x){
+				if(!/^\d+/.test($('#e_bs5_'+x).val()))return;
 				adatas[x].bs[5] = $('#e_bs5_'+x).val();
 				updateAlistToServer(x,'bs5');
 			}
 			function set_cs1(x){
+				if(!/^\d+/.test($('#e_cs1_'+x).val()))return;
 				adatas[x].cs[1] = $('#e_cs1_'+x).val();
 				updateAlistToServer(x,'cs1');
 			}
 			function set_cs3(x){
+				if(!/^\d+/.test($('#e_cs3_'+x).val()))return;
 				adatas[x].cs[3] = $('#e_cs3_'+x).val();
 				updateAlistToServer(x,'cs3');
 			}
