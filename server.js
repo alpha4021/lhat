@@ -109,7 +109,7 @@ app.get('/:a(acs2|als2)/:type([ce])/:lid(\\d+)/',function(req,res){
 		case "acs2":data = {data:alist[pos].cs[2],pos:pos};break;
 		case "als2":data = {data:alist[pos].ls[2],pos:pos};break;
 	}
-	var reply = jade.renderFile(p_public+'/'+a+'.jade',data);
+	var reply = jade.renderFile(p_public+'/'+_fn+'.jade',data);
 	res.send(reply);
 	
 });

@@ -61,7 +61,7 @@ html
 				$('#f_status_'+x).val(adata.status);
 				if(adata.type=='c'){
 					$('#f_hate_'+x).val(adata.hate);
-					$('#f_fatique_'+x).val(adata.fatique);
+					$('#f_fatique_'+x).val(adata.ls[1]);
 				} else {
 					$('#f_hate_'+x).prop('disabled',true);
 					$('#f_fatique_'+x).prop('disabled',true);
@@ -111,6 +111,9 @@ html
 				} else {
 					$('#f_BS8_'+x).removeClass('backred');
 					$('#f_BS8_'+x).text(bs_name[8]);
+				}
+				function getAction(x){
+					return adatas[x].action;
 				}
 				
 			}
@@ -199,7 +202,6 @@ html
 						
 					tr.fixedwidth
 						td
-							|BS
 						td(id='f_BS1_'+x)
 							|萎縮
 						td(id='f_BS2_'+x)
@@ -208,18 +210,21 @@ html
 							|硬直
 						td(id='f_BS4_'+x)
 							|惑乱
-						td(id='f_BS5_'+x)
-							|衰弱
 						td(id='f_BS6_'+x)
 							|重篤
 						td(id='f_BS7_'+x)
 							|慢心
-						td(id='f_BS8_'+x)
-							|追擊
 					tr
 						td
-							|CS
+						td(id='f_BS5_'+x)
+							|衰弱
+						td(id='f_BS8_'+x)
+							|追擊
 						td(id='f_CS1_'+x)
 							|再生
 						td(id='f_CS3_'+x)
 							|障壁
+						td(id='f_LS3_'+x)
+							|戰
+						td(id='f_LS4_'+x)
+							|死
