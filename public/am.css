@@ -31,6 +31,10 @@ input{
 .backgreen{
 	background-color: #37FF37;
 }
+.backblack{
+	background-color: #000;
+	color: #FFF;
+}
 .inline{
 	display:inline;
 }

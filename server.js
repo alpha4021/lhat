@@ -280,20 +280,22 @@ app.post('/update/:type/:lid(\\d+)',function(req,res){
 	log(_fn,"item="+item+" value="+value);
 	
 	switch(item){
-		case 'bs8':
-			if(value===undefined)value=[];alist[alid].bs[8] = value;break;
 		case 'bs5'://alist[alid].bs[5] = value;break;
 		case 'bs1':
 		case 'bs2':
 		case 'bs3':
 		case 'bs4':
 		case 'bs6':
-		case 'bs7':alist[alid].bs[item.charAt(2)] = value;break;
+		case 'bs7':
 		case 'cs3':
-		case 'cs1':alist[alid].cs[item.charAt(2)] = value;break;
+		case 'cs1':
+		case 'ls1':
+		case 'ls3':
+		case 'ls4':alist[alid][item.substr(0,2)][item.charAt(2)] = value;break;
+		case 'bs8':
+			if(value===undefined)value=[];alist[alid].bs[8] = value;break;
 		case 'cs2':
 			if(value===undefined)value=[];alist[alid].cs[2] = value;break;
-		
 		default:
 		alist[alid][item] = value;
 		break;

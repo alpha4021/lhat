@@ -54,6 +54,12 @@ html
 				//constant enemy data
 				var adata = adatas[x];
 				var data = adatas[x].data;
+				if(adatas[x].ls[3] == 1 ||adatas[x].ls[4] == 1){
+					$('#cont'+x).addClass('backblack');
+					return;
+				} else {
+					$('#cont'+x).removeClass('backblack');
+				}
 				$('#e_name_'+x).val(data.name);
 				$('#e_max_hp_'+x).val(data.max_hitpoint);
 				$('#e_CR_'+x).val(data.character_rank);
@@ -240,7 +246,7 @@ html
 		br
 		- for(var x=0;x<12;x++)
 			div(id='cont'+x).container.pc.unload
-				table(id='table0_'+x).value
+				table.value
 					tr
 						td
 							|CR:
@@ -250,7 +256,7 @@ html
 							input(id='e_lid_'+x disabled type='text').shortvalue
 						td(colspan=2)
 							input(id='e_name_'+x disabled type='text').longvalue
-				table(id='table0a_'+x).value
+				table.value
 					tr
 						td
 							|HP:
@@ -260,7 +266,7 @@ html
 						td(colspan=2)
 							|タグ
 							input(id='e_tags_'+x disabled type='text').quitelongvalue
-				table(id='table1_'+x).value
+				table.value
 					tr
 						td(width='25%')
 							|因果力
@@ -370,7 +376,7 @@ html
 					tr
 
 							
-				table(id='table2_'+x).value
+				table.value
 					tr.lock
 						td.switch
 							label.switch
@@ -417,7 +423,7 @@ html
 						td.switch
 							button(onClick='csd('+x+')' class='switch').
 								Skill
-				table(id='table3_'+x).value
+				table.value
 					tr.lock
 						td.border
 							|衰弱

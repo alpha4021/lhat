@@ -56,6 +56,12 @@ html
 				//constant enemy data
 				var adata = adatas[x];
 				var data = adatas[x].data;
+				if(adatas[x].ls[3] == 1 ||adatas[x].ls[4] == 1){
+					$('#cont'+x).addClass('backblack');
+					return;
+				} else {
+					$('#cont'+x).removeClass('backblack');
+				}
 				$('#e_name_'+x).val(data.name);
 				$('#e_max_hp_'+x).val(data.max_hitpoint);
 				$('#e_CR_'+x).val(data.character_rank);
@@ -233,8 +239,8 @@ html
 						td(width='25%')
 							|因果力
 							br
-							input(id='e_effect_'+x type='text').value
 							button.mini(onClick='effect_add('+x+')') +
+							input(id='e_effect_'+x type='text').value
 							button.mini(onClick='effect_minus('+x+')') -
 						td(width='25%')
 							|行動力

@@ -29,6 +29,15 @@ html
 					adatas = data.a;
 					loadEdatas();
 				};
+				$('td.clickable').click(function(){
+					var a = $(this).attr('id').substr(2,5);
+					var s = a.substr(0,2).toLowerCase();
+					var n = a.substr(2,1);
+					var x = a.substr(4,1);
+					adatas[x][s][n] ^= 1;
+					updateAlistToServer(x,s+n);
+
+				});
 			});
 			function add(){
 				var type = $('#s_new_type').val();
@@ -39,6 +48,30 @@ html
 			function minus(x){
 				alert(x);
 				$.post('/remove/alid/'+x,{type:adatas[x].type});
+			}
+			function increment(x,item){
+				adatas[x][item]++;
+				updateAlistToServer(x,item);
+			}
+			function decrement(x,item){
+				if(adatas[x][item] == 0)return;
+				else adatas[x][item]--;
+				updateAlistToServer(x,item);
+			}
+			function increment_s(x,item){
+				var s = item.substr(0,2).toLowerCase();
+				var n = item.substr(2,1);
+				//alert(x+":"+s+":"+n+" value="+adatas[x][s][n]);
+				adatas[x][s][n]++;
+				updateAlistToServer(x,s+n);
+			}
+			function decrement_s(x,item){
+				var s = item.substr(0,2).toLowerCase();
+				var n = item.substr(2,1);
+				//alert(x+":"+s+":"+n+" value="+adatas[x][s][n]);
+				if(adatas[x][s][n] == 0)return;
+				else adatas[x][s][n]--;
+				updateAlistToServer(x,s+n);
 			}
 			function loadEdatas(){
 				for(var x = 0;x<adatas.length;x++){
@@ -61,10 +94,10 @@ html
 				$('#f_status_'+x).val(adata.status);
 				if(adata.type=='c'){
 					$('#f_hate_'+x).val(adata.hate);
-					$('#f_fatique_'+x).val(adata.ls[1]);
+					$('#f_LS1_'+x).val(adata.ls[1]);
 				} else {
 					$('#f_hate_'+x).prop('disabled',true);
-					$('#f_fatique_'+x).prop('disabled',true);
+					$('#f_LS1_'+x).prop('disabled',true);
 				}
 				$('#f_effect_'+x).val(adata.effect);
 				$('#f_HP_'+x).val(adata.hp);
@@ -82,6 +115,12 @@ html
 				else $('#f_BS6_'+x).removeClass('backred');
 				if(adata.bs[7] == 1)$('#f_BS7_'+x).addClass('backred');
 				else $('#f_BS7_'+x).removeClass('backred');
+				
+				if(adata.ls[3] == 1)$('#f_LS3_'+x).addClass('backblack');
+				else $('#f_LS3_'+x).removeClass('backblack');
+				
+				if(adata.ls[4] == 1)$('#f_LS4_'+x).addClass('backblack');
+				else $('#f_LS4_'+x).removeClass('backblack');
 				
 				if(adata.bs[5] != 0){
 					$('#f_BS5_'+x).addClass('backred');
@@ -112,10 +151,39 @@ html
 					$('#f_BS8_'+x).removeClass('backred');
 					$('#f_BS8_'+x).text(bs_name[8]);
 				}
-				function getAction(x){
-					return adatas[x].action;
+			}
+			function getAction(x){
+				return adatas[x].action;
+			}
+			function updateAlistToServer(x,item){
+				var value;
+				switch(item){
+					case 'effect':
+					case 'hp':
+					case 'hate':
+						//adatas[x][item] = $('#e_'+item+'_'+x).val()
+						value = adatas[x][item];
+					break;
+					case 'bs1':
+					case 'bs2':
+					case 'bs3':
+					case 'bs4':
+					case 'bs6':
+					case 'bs7':
+					case 'bs8':
+					case 'bs5':
+					case 'cs3':
+					case 'cs1':
+					case 'ls1':
+					case 'ls3':
+					case 'ls4':
+						value = adatas[x][item.substr(0,2)][item.charAt(2)];
+						break;
 				}
+				//update alist
+				console.log("update "+item+" "+value);
 				
+				$.post('./update/'+adatas[x].type+'/'+adatas[x].lid+'/',{item:item,value:value});
 			}
 	body
 		div
@@ -159,22 +227,22 @@ html
 						td
 							input(id='f_action_'+x disabled).shortvalue
 						td
-							button.mini.
+							button(onClick='increment_s('+x+',"ls1")').mini.
 								+
-							input(id='f_fatique_'+x).shortvalue
-							button.mini.
+							input(id='f_LS1_'+x).shortvalue
+							button(onClick='decrement_s('+x+',"ls1")').mini.
 								-
 						td
-							button.mini.
+							button(onClick='increment('+x+',"hate")').mini.
 								+
 							input(id='f_hate_'+x).shortvalue
-							button.mini.
+							button(onClick='decrement('+x+',"hate")').mini.
 								-
 						td
-							button.mini.
+							button(onClick='increment('+x+',"effect")').mini.
 								+
 							input(id='f_effect_'+x).shortvalue
-							button.mini.
+							button(onClick='decrement('+x+',"effect")').mini.
 								-
 						td
 							input(id='f_HP_'+x).shortvalue
@@ -185,8 +253,6 @@ html
 								Delete
 				table(id='t_S_'+x)
 					tr.fixedwidth
-						td
-							|時
 						td.display
 							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x checked)
 							label(for="f_toki_B_"+x).
@@ -201,21 +267,19 @@ html
 								行動済
 						
 					tr.fixedwidth
-						td
-						td(id='f_BS1_'+x)
+						td(id='f_BS1_'+x).clickable
 							|萎縮
-						td(id='f_BS2_'+x)
+						td(id='f_BS2_'+x).clickable
 							|放心
-						td(id='f_BS3_'+x)
+						td(id='f_BS3_'+x).clickable
 							|硬直
-						td(id='f_BS4_'+x)
+						td(id='f_BS4_'+x).clickable
 							|惑乱
-						td(id='f_BS6_'+x)
+						td(id='f_BS6_'+x).clickable
 							|重篤
-						td(id='f_BS7_'+x)
+						td(id='f_BS7_'+x).clickable
 							|慢心
-					tr
-						td
+					tr.fixedwidth
 						td(id='f_BS5_'+x)
 							|衰弱
 						td(id='f_BS8_'+x)
@@ -224,7 +288,7 @@ html
 							|再生
 						td(id='f_CS3_'+x)
 							|障壁
-						td(id='f_LS3_'+x)
-							|戰
-						td(id='f_LS4_'+x)
-							|死
+						td(id='f_LS3_'+x).clickable
+							|戦闘不能
+						td(id='f_LS4_'+x).clickable
+							|死亡
