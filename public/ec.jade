@@ -115,6 +115,11 @@ html
 				adatas[x].effect--;
 				updateAlistToServer(x,'effect');
 			}
+			function hp_set(x){
+				if(!/^\d+/.test($('#e_hp_'+x).val()))return;
+				adatas[x].hp = $('#e_hp_'+x).val();
+				updateAlistToServer(x,'hp');
+			}
 			function cleanup(x){
 				console.log('cleanup_'+x);
 				//var eff_bs5 = $('#e_bs5_'+x).val();
@@ -223,6 +228,8 @@ html
 						input(id='e_hp_'+x type='text').shortvalue
 						|/
 						input(id='e_max_hp_'+x disabled type='text').shortvalue
+						button(onClick='hp_set('+x+')').
+							set
 					div.flex
 					div.right
 						button(onClick='esd('+x+')').
