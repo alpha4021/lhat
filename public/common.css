@@ -1,0 +1,81 @@
+body{
+	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+	font-size: 12px;
+}
+button{
+	border: 1px;
+    border-style: outset;
+    height: 18px;
+    padding: 0px 0px 0px 0px;
+    font-size: 12px;
+	
+}
+.display{
+	border: 1px;
+	border-style: solid;
+	
+}
+.border{
+	border:1px;
+	border-style: dotted;
+}
+.unload{
+	display: none !important;
+}
+.backred{
+	background-color: #FF3737;
+}
+.backgreen{
+	background-color: #37FF37;
+}
+.backblack{
+	background-color: #000;
+	color: #FFF;
+}
+.inline{
+	display:inline;
+}
+.flex{
+	-moz-box-flex: 1;
+	-webkit-box-flex: 1;
+	text-align: center;
+}
+.item{
+	display: -moz-box;
+	-moz-box-orient: horizontal;
+	-moz-box-pack: center;
+	-moz-box-align: center;
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+}
+.right{
+	text-align:right;
+}
+.left{
+	text-align:left;
+}
+input.shortvalue {
+	width: 16px;
+	display: inline-block;
+	text-align: center;
+}
+input.value {
+	width: 36px;
+	text-align: center;
+}
+input.longvalue {
+	width: 108px;
+	
+}
+input.quitelongvalue {
+	width: 125px;
+	
+}
+input.verylongvalue{
+	width: 200px;
+}
+.textcenter{
+	text-align:center;
+}

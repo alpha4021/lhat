@@ -14,69 +14,8 @@ tr td {
 input{
 	height:10px;
 }
-.display{
-	border: 1px;
-	border-style: solid;
-	
-}
 .container{
 	width:800px;
-}
-.unload{
-	display: none;
-}
-.backred{
-	background-color: #FF3737;
-}
-.backgreen{
-	background-color: #37FF37;
-}
-.backblack{
-	background-color: #000;
-	color: #FFF;
-}
-.inline{
-	display:inline;
-}
-.flex{
-	-moz-box-flex: 1;
-	-webkit-box-flex: 1;
-}
-.item{
-	display: -moz-box;
-	-moz-box-orient: horizontal;
-	-moz-box-pack: center;
-	-moz-box-align: center;
-	display: -webkit-box;
-	-webkit-box-orient: horizontal;
-	-webkit-box-pack: center;
-	-webkit-box-align: center;
-}
-.right{
-	text-align:right;
-}
-.left{
-	text-align:left;
-}
-input.shortvalue {
-	width: 16px;
-	display: inline-block;
-	text-align: center;
-}
-input.value {
-	width: 36px;
-	text-align: center;
-}
-input.longvalue {
-	width: 108px;
-	
-}
-input.quitelongvalue {
-	width: 162px;
-	
-}
-td.textcenter{
-	text-align:center;
 }
 button.mini{
 	width: 10px;

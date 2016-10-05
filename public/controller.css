@@ -1,54 +1,16 @@
 /*Element Setting*/
-body{
-	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
-	font-size: 12px;
-}
-button{
-	padding: 1px 0px 1px 0px;
-	
-}
 tr td {
 	border:0;
 	text-align:center;
+	padding:0;
 }
 input{
 	height:10px;
 }
 /*Class Setting*/
-.backred{
-	background-color: #FF3737;
-}
-.backgreen{
-	background-color: #37FF37;
-}
-.backblack{
-	background-color: #000;
-	color: #FFF;
-}
+
 div.container {
-	border-style: solid;
-	width: 280px;
 	display: inline-block;
-}
-div.unload {
-	display: none;
-}
-input.shortvalue {
-	width: 16px;
-	display: inline-block;
-	text-align: center;
-}
-input.value {
-	width: 36px;
-	text-align: center;
-}
-input.longvalue {
-	width: 108px;
-	
-}
-input.quitelongvalue {
-	width: 162px;
-	
 }
 button.mini{
 	width: 10px;
@@ -60,14 +22,9 @@ table.value{
 	padding: 0px;
 	border: 0px;
 }
-td.border{
-	border: 1px;
-	border-style: dotted;
-	
-}
 textarea.cs2{
-	width: 278px;
-	height: 103px;
+	width: 99%;
+	height: 100px;
 	padding: 0px;
 }
 /*Switch related settings*/
@@ -78,7 +35,7 @@ td.switch{
 .switch {
   position: relative;
   display: inline-block;
-  width: 36px;
+  width: 33px;
   height: 40px;
   left: 2;
 }
@@ -94,7 +51,7 @@ input.switch{display:none;}
   left: 0;
   right: 0;
   bottom: 0;
-  width: 36px;
+  width: 33px;
   background-color: #212121;
   color: #fff;
   -webkit-transition: .2s;
@@ -107,7 +64,7 @@ input.switch{display:none;}
   position: absolute;
   content: "";
   height: 16px;
-  width: 34px;
+  width: 30px;
   top: 2px;
   left: 1px;
   background-color: #ccc;
@@ -133,4 +90,27 @@ input:checked + .slider:before {
   -webkit-transform: translateY(20px);
   -ms-transform: translateY(20px);
   transform: translateY(20px);
+}
+button.mini{
+	width: 10px;
+	border: 1px;
+	padding: 0px;
+}
+input[type='radio']{
+	display:none;
+	height:0px;
+	width:0px;
+}
+input:checked + label{
+	background-color: #AAD;
+	width:100%;
+}
+tr.fixedwidth td{
+	width:50px;
+}
+tr.fixedwidth2 td{
+	width: 30px;
+}
+tr.fixedwidth3 td{
+	width: 64px;
 }

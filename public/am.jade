@@ -3,7 +3,8 @@ doctype html
 html
 	head
 		title AList Manager
-		link(rel="stylesheet" type="text/css" href="am.css")
+		link(rel="stylesheet" type="text/css" href="controller.css")
+		link(rel="stylesheet" type="text/css" href="common.css")
 		script(src='jquery-3.1.0.js').
 		script(type="text/javascript").
 			const bs_name = [null,'萎縮','放心','硬直','惑乱','衰弱','重篤','慢心','追擊'];
@@ -36,7 +37,6 @@ html
 					var x = a.substr(4,1);
 					adatas[x][s][n] ^= 1;
 					updateAlistToServer(x,s+n);
-
 				});
 			});
 			function add(){
