@@ -253,20 +253,6 @@ html
 								Delete
 				table(id='t_S_'+x)
 					tr.fixedwidth
-						td.display
-							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x checked)
-							label(for="f_toki_B_"+x).
-								未行動
-						td.display
-							input(type="radio" value="W" name="toki"+x id="f_toki_W_"+x)
-							label(for="f_toki_W_"+x).
-								待機中
-						td.display
-							input(type="radio" value="F" name="toki"+x id="f_toki_F_"+x)
-							label(for="f_toki_F_"+x).
-								行動済
-						
-					tr.fixedwidth
 						td(id='f_BS1_'+x).clickable
 							|萎縮
 						td(id='f_BS2_'+x).clickable
@@ -279,6 +265,14 @@ html
 							|重篤
 						td(id='f_BS7_'+x).clickable
 							|慢心
+						td.display
+							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x checked)
+							label(for="f_toki_B_"+x).
+								未行動
+						td.display
+							input(type="radio" value="W" name="toki"+x id="f_toki_W_"+x)
+							label(for="f_toki_W_"+x).
+								待機中
 					tr.fixedwidth
 						td(id='f_BS5_'+x)
 							|衰弱
@@ -292,3 +286,10 @@ html
 							|戦闘不能
 						td(id='f_LS4_'+x).clickable
 							|死亡
+						td.display
+							input(type="radio" value="F" name="toki"+x id="f_toki_F_"+x)
+							label(for="f_toki_F_"+x).
+								行動済
+					tr
+						td(colspan=8)
+							input(id='f_CS2_'+x disabled).fullwidth

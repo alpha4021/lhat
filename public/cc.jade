@@ -112,10 +112,15 @@ html
 				show_bs8(x);
 				$('#e_cs1_'+x).val(adata.cs[1]);
 				$('#e_cs3_'+x).val(adata.cs[3]);
-				$('#e_cs2_'+x).val('');
+				$('#e_cs2_'+x).val('輕減/');
 				for(var i = 0;i<adata.cs[2].length;i++){
 					//alert(i);
 					$('#e_cs2_'+x).val($('#e_cs2_'+x).val()+'('+c_effects[adata.cs[2][i].type]+'):'+adata.cs[2][i].value+'/');
+				}
+				$('#e_ls2_'+x).val('弱点/');
+				for(var i = 0;i<adata.ls[2].length;i++){
+					//alert(i);
+					$('#e_ls2_'+x).val($('#e_ls2_'+x).val()+'('+c_effects[adata.ls[2][i].type]+'):'+adata.ls[2][i].value+'/');
 				}
 				
 				
@@ -188,6 +193,11 @@ html
 				var lid = adatas[x].lid;
 				var type = adatas[x].type;
 				window.open('./acs2/'+adatas[x].type+'/'+adatas[x].lid+'/','',"location=0,toolbar=0,menubar=0,status=0,resizable=0,width=180,height=200");
+			}
+			function als2(x){
+				var lid = adatas[x].lid;
+				var type = adatas[x].type;
+				window.open('./als2/'+adatas[x].type+'/'+adatas[x].lid+'/','',"location=0,toolbar=0,menubar=0,status=0,resizable=0,width=180,height=200");
 			}
 			function ccu(x){
 				window.open('./ccu/'+adatas[x].id,'',"toolbar=0,menubar=0,status=0,resizable=0,width=300,height=500");
@@ -412,6 +422,9 @@ html
 						td
 							button(onClick='acs2('+x+')').
 								輕減
+							br
+							button(onClick='als2('+x+')').
+								弱点
 					tr
 						td(colspan=6)
 							|追擊
@@ -422,6 +435,8 @@ html
 							button(onClick='pop_bs8('+x+')').mini.
 								-
 				textarea(type='text' disabled id='e_cs2_'+x).cs2
+				br
+				textarea(type='text' disabled id='e_ls2_'+x).cs2
 				br
 				button(onClick='ccu('+x+')').
 					Connection & Union

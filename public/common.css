@@ -56,6 +56,9 @@ button{
 .left{
 	text-align:left;
 }
+.fullwidth{
+	width: 99%;
+}
 input.shortvalue {
 	width: 16px;
 	display: inline-block;
