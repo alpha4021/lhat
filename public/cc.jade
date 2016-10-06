@@ -7,7 +7,7 @@ html
 		link(rel="stylesheet" type="text/css" href="controller.css")
 		script(src='jquery-3.1.0.js').
 		script(type="text/javascript").
-			const c_effects = {fire:'火炎',ice:'冷気',shock:'電撃',light:'光輝',dark:'邪毒',san:'精神',near:'白兵攻撃',far:'射撃攻撃',weapon:'武器攻撃',magic:'魔法攻撃',special:'特殊攻撃'};
+			const c_effects = {fire:'火炎',ice:'冷気',shock:'電撃',light:'光輝',dark:'邪毒',san:'精神',near:'至近から',far:'至近以外から',weapon:'武器攻撃',magic:'魔法攻撃',special:'特殊攻撃'};
 			var adatas = [];
 			$(document).ready(function(){
 				$.post('./alist/c',function(data){

@@ -9,6 +9,7 @@ html
 		script(type="text/javascript").
 			const bs_name = [null,'萎縮','放心','硬直','惑乱','衰弱','重篤','慢心','追擊'];
 			const cs_name = [null,'再生','輕減','障壁'];
+			const c_effects = {fire:'火炎',ice:'冷気',shock:'電撃',light:'光輝',dark:'邪毒',san:'精神',near:'至近から',far:'至近以外から',weapon:'武器攻撃',magic:'魔法攻撃',special:'特殊攻撃'};
 			var adatas = [];
 			$(document).ready(function(){
 				$.post('./alist/a',function(data){
@@ -46,7 +47,7 @@ html
 				$.post('/add/'+type+'/'+id);
 			}
 			function minus(x){
-				alert(x);
+				//ask for confirm?
 				$.post('/remove/alid/'+x,{type:adatas[x].type});
 			}
 			function increment(x,item){
@@ -102,6 +103,18 @@ html
 				$('#f_effect_'+x).val(adata.effect);
 				$('#f_HP_'+x).val(adata.hp);
 				$('#f_MAX_HP_'+x).val(data.max_hitpoint);
+				
+				$('#f_CS2_'+x).val('輕減/');
+				for(var i = 0;i<adata.cs[2].length;i++){
+					//alert(i);
+					$('#f_CS2_'+x).val($('#f_CS2_'+x).val()+'('+c_effects[adata.cs[2][i].type]+'):'+adata.cs[2][i].value+'/');
+				}
+				$('#f_LS2_'+x).val('弱点/');
+				for(var i = 0;i<adata.ls[2].length;i++){
+					//alert(i);
+					$('#f_LS2_'+x).val($('#f_LS2_'+x).val()+'('+c_effects[adata.ls[2][i].type]+'):'+adata.ls[2][i].value+'/');
+				}
+				
 				
 				if(adata.bs[1] == 1)$('#f_BS1_'+x).addClass('backred');
 				else $('#f_BS1_'+x).removeClass('backred');
@@ -199,33 +212,23 @@ html
 		- for(var x = 0;x<24;x++)
 			div(id='cont_'+x).unload.display.container
 				table
-					tr
-						td(width=30)
-							|ID
+					tr.fixedwidth
 						td
-							|T
+							|疲労
 						td
-							|Name
+							|ヘイト
 						td
-							|A
+							|因果力
+						td(colspan=2)
+							|名前
 						td
-							|F
-						td
-							|H
-						td
-							|E
+							|行動力
 						td
 							|HP
-					tr
 						td
-							label(id=x).
-								#{x}
-						td
+							input(id=x value=x disabled).shortvalue.
 							input(id='f_type_'+x disabled).shortvalue
-						td
-							input(id='f_name_'+x disabled).longvalue
-						td
-							input(id='f_action_'+x disabled).shortvalue
+					tr
 						td
 							button(onClick='increment_s('+x+',"ls1")').mini.
 								+
@@ -244,6 +247,10 @@ html
 							input(id='f_effect_'+x).shortvalue
 							button(onClick='decrement('+x+',"effect")').mini.
 								-
+						td(colspan=2)
+							input(id='f_name_'+x disabled).longvalue
+						td
+							input(id='f_action_'+x disabled).shortvalue
 						td
 							input(id='f_HP_'+x).shortvalue
 							|/
@@ -251,7 +258,6 @@ html
 						td
 							button(onClick='minus('+x+')').
 								Delete
-				table(id='t_S_'+x)
 					tr.fixedwidth
 						td(id='f_BS1_'+x).clickable
 							|萎縮
@@ -293,3 +299,6 @@ html
 					tr
 						td(colspan=8)
 							input(id='f_CS2_'+x disabled).fullwidth
+					tr
+						td(colspan=8)
+							input(id='f_LS2_'+x disabled).fullwidth

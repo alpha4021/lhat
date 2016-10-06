@@ -69,8 +69,7 @@ input.value {
 	text-align: center;
 }
 input.longvalue {
-	width: 108px;
-	
+	width: 100px;
 }
 input.quitelongvalue {
 	width: 125px;
