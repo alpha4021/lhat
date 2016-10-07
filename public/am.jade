@@ -5,11 +5,14 @@ html
 		title AList Manager
 		link(rel="stylesheet" type="text/css" href="controller.css")
 		link(rel="stylesheet" type="text/css" href="common.css")
+		script(src='roll.js').
 		script(src='jquery-3.1.0.js').
 		script(type="text/javascript").
 			const bs_name = [null,'萎縮','放心','硬直','惑乱','衰弱','重篤','慢心','追擊'];
 			const cs_name = [null,'再生','輕減','障壁'];
 			const c_effects = {fire:'火炎',ice:'冷気',shock:'電撃',light:'光輝',dark:'邪毒',san:'精神',near:'至近から',far:'至近以外から',weapon:'武器攻撃',magic:'魔法攻撃',special:'特殊攻撃'};
+			const c_rollable_c = {motion:"運動値",durability:"耐久値",dismantle:"解除値",operate:"操作値",sense:"知覚値",negotiate:"交渉値",knowledge:"知識値",analyze:"解析値",hit:"命中値",avoid:"回避値",resist:"抵抗値"};
+			const c_rollable_e = {avoid:"回避値",resist:"抵抗値"};
 			var adatas = [];
 			$(document).ready(function(){
 				$.post('./alist/a',function(data){
@@ -164,6 +167,11 @@ html
 					$('#f_BS8_'+x).removeClass('backred');
 					$('#f_BS8_'+x).text(bs_name[8]);
 				}
+				
+				$('#f_rollable_'+x).empty();
+				$.each(eval('c_rollable_'+adata.type), function(k,v){
+					$('#f_rollable_'+x).append($('<option>',{value:k}).text(v));
+				});
 			}
 			function getAction(x){
 				return adatas[x].action;
@@ -198,6 +206,11 @@ html
 				
 				$.post('./update/'+adatas[x].type+'/'+adatas[x].lid+'/',{item:item,value:value});
 			}
+			function rollable(x){
+				var q = adatas[x].data['abl_'+$('#f_rollable_'+x).val()];
+				var r = roll(parseRoll(q));
+				alert(r);
+			}
 	body
 		div
 			|add
@@ -211,7 +224,7 @@ html
 				ADD
 		- for(var x = 0;x<24;x++)
 			div(id='cont_'+x).unload.display.container
-				table
+				table.inline
 					tr.fixedwidth
 						td
 							|疲労
@@ -302,3 +315,13 @@ html
 					tr
 						td(colspan=8)
 							input(id='f_LS2_'+x disabled).fullwidth
+				table.inline
+					tr
+						td
+							select(id='f_rollable_'+x)
+								
+							button(onClick='rollable('+x+')').
+								Roll
+					tr
+						td
+							button 2
