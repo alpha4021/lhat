@@ -1,4 +1,4 @@
-function parse(input){
+function parseRoll(input){
 	//a+bD
 	var x = input.split('+');
 	x[1] = x[1].slice(0,-1);
@@ -16,10 +16,9 @@ function roll(x){
 	var c1 = y.filter(function(x){return x==1;}).length;
 	if(y.filter(function(x){return x==6;}).length >= 2)r = 'c';
 	if(y.filter(function(x){return x==1;}).length == y.length)r = 'f';
-	console.log(y.toString()+"->"+r);
+	console.log(y.toString()+" +"+x[0]+" ->"+r);
 	return r;
 }
 function RtoString(a,b){
 	return a+"+"+b+"D";
 }
-while(roll(parse('0+2D'))!='c'){}
