@@ -181,15 +181,15 @@ app.post('/add/:type/:id(\\d+)',function(req,res){
 						id:id,
 						name:data.name,
 						action:data.action,
-						status:"b",
+						toki:"B",
 						hate:0,
 						lid:(ac.c++),
 						hp:data.max_hitpoint,
 						effect:data.effect,
 						cs:[null,0,[],0],//regen,reduc,wall
-						bs:[null,false,false,false,false,0,false,false,[]],
+						bs:[null,0,0,0,0,0,0,0,[]],
 						ls:[null,0,[],false,false],
-						os:[false,false,false,false,false,false,1,'U'],
+						hate_top:0,
 						data:data
 						});//index: i in clink
 					callback(null,'c');
@@ -209,15 +209,14 @@ app.post('/add/:type/:id(\\d+)',function(req,res){
 						id:id,
 						name:data.name,
 						action:data.action,
-						status:"b",
+						toki:"B",
 						//hate:data.hate,
 						lid:(ac.e++),
 						hp:data.max_hitpoint,
 						effect:data.effect,
 						cs:[null,0,[],0],//regen,reduc,wall
-						bs:[null,false,false,false,false,0,false,false,[]],
+						bs:[null,0,0,0,0,0,0,0,[]],
 						ls:[null,0,[],false,false],//fatique,weak,KO,death
-						os:[false,false,false,false,false,false,1,'U'],
 						data:data
 					});//index: i in elink
 					callback(null,'e');

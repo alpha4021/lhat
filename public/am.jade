@@ -42,6 +42,12 @@ html
 					adatas[x][s][n] ^= 1;
 					updateAlistToServer(x,s+n);
 				});
+				$('input.toki').change(function(){
+					var x = this.name.substr(4,1);
+					console.log(this);
+					adatas[x].toki = this.value;
+					updateAlistToServer(x,'toki');
+				});
 			});
 			function add(){
 				var type = $('#s_new_type').val();
@@ -172,6 +178,8 @@ html
 				$.each(eval('c_rollable_'+adata.type), function(k,v){
 					$('#f_rollable_'+x).append($('<option>',{value:k}).text(v));
 				});
+				$('input[name="toki'+x+'"][value="'+adatas[x].toki+'"]').prop("checked",true);
+				
 			}
 			function getAction(x){
 				return adatas[x].action;
@@ -182,6 +190,7 @@ html
 					case 'effect':
 					case 'hp':
 					case 'hate':
+					case 'toki':
 						//adatas[x][item] = $('#e_'+item+'_'+x).val()
 						value = adatas[x][item];
 					break;
@@ -208,7 +217,9 @@ html
 			}
 			function rollable(x){
 				var q = adatas[x].data['abl_'+$('#f_rollable_'+x).val()];
-				var r = roll(parseRoll(q));
+				//console.log($('input[name="toki'+x+'"]:checked').val());
+				console.log(adatas[x].bs);
+				var r = roll(parseRoll(q),adatas[x].bs,$('input[name="toki'+x+'"]:checked').val());
 				alert(r);
 			}
 	body
@@ -284,14 +295,11 @@ html
 							|重篤
 						td(id='f_BS7_'+x).clickable
 							|慢心
-						td.display
-							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x checked)
-							label(for="f_toki_B_"+x).
-								未行動
-						td.display
-							input(type="radio" value="W" name="toki"+x id="f_toki_W_"+x)
-							label(for="f_toki_W_"+x).
-								待機中
+						td(colspan=2)
+							select(id='f_rollable_'+x)
+								
+							button(onClick='rollable('+x+')').
+								Roll
 					tr.fixedwidth
 						td(id='f_BS5_'+x)
 							|衰弱
@@ -305,23 +313,43 @@ html
 							|戦闘不能
 						td(id='f_LS4_'+x).clickable
 							|死亡
+					tr.fixedwidth
 						td.display
-							input(type="radio" value="F" name="toki"+x id="f_toki_F_"+x)
+							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x checked).toki
+							label(for="f_toki_B_"+x).
+								未行動
+						td.display
+							input(type="radio" value="W" name="toki"+x id="f_toki_W_"+x).toki
+							label(for="f_toki_W_"+x).
+								待機中
+						td.display
+							input(type="radio" value="I" name="toki"+x id="f_toki_I_"+x).toki
+							label(for="f_toki_I_"+x).
+								イニシ
+						td.display
+							input(type="radio" value="Mu" name="toki"+x id="f_toki_Mu_"+x).toki
+							label(for="f_toki_Mu_"+x).
+								ムーブ
+						td.display
+							input(type="radio" value="Ma" name="toki"+x id="f_toki_Ma_"+x).toki
+							label(for="f_toki_Ma_"+x).
+								マイナー
+						td.display
+							input(type="radio" value="Me" name="toki"+x id="f_toki_Me_"+x).toki
+							label(for="f_toki_Me_"+x).
+								メジャー
+						td.display
+							input(type="radio" value="Mi" name="toki"+x id="f_toki_Mi_"+x).toki
+							label(for="f_toki_Mi_"+x).
+								インス
+						td.display
+							input(type="radio" value="F" name="toki"+x id="f_toki_F_"+x).toki
 							label(for="f_toki_F_"+x).
 								行動済
+						
 					tr
 						td(colspan=8)
 							input(id='f_CS2_'+x disabled).fullwidth
 					tr
 						td(colspan=8)
 							input(id='f_LS2_'+x disabled).fullwidth
-				table.inline
-					tr
-						td
-							select(id='f_rollable_'+x)
-								
-							button(onClick='rollable('+x+')').
-								Roll
-					tr
-						td
-							button 2

@@ -12,15 +12,18 @@ function roll(x,bs,toki){
 	//BS2: !M  -1D
 	//BS4: all -1D
 	//BS7: fumble
+	console.log(RtoString(x[0],x[1]));
 	toki = toki || 'B';
 	bs = bs || [null,false,false,false,false,false,false,false,false];
-	bs[1] = (bs[1]&&toki.charAt(0)=='M') || false;
-	bs[2] = (bs[2]&&toki.charAt(0)!='M') || false;
-	bs[4] = bs[4] || false;
-	//console.log(toki);
-	//console.log(bs[1]);
-	//console.log(bs[2]);
-	//console.log(bs[4]);
+	bs[1] = (parseInt(bs[1])&&toki.charAt(0)=='M') || false;
+	bs[2] = (parseInt(bs[2])&&toki.charAt(0)!='M') || false;
+	bs[4] = (parseInt(bs[4])&&true) || false;
+	bs[7] = (parseInt(bs[7])&&true) || false;
+	console.log('toki: '+toki);
+	console.log('bs[1]: '+bs[1]);
+	console.log('bs[2]: '+bs[2]);
+	console.log('bs[4]: '+bs[4]);
+	console.log('bs[7]: '+bs[7]);
 	//x[0] + x[1]D
 	var y = [];	
 	var r = parseInt(x[0]);
