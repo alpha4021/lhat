@@ -1,5 +1,7 @@
 function parseRoll(input){
 	//a+bD
+	//if constant, return as a+0D
+	if(input.indexOf('+')==-1)return [input,0];
 	var x = input.split('+');
 	x[1] = x[1].slice(0,-1);
 	return x;
@@ -24,7 +26,7 @@ function roll(x,bs,toki){
 	var r = parseInt(x[0]);
 	var rn = x[1] - (bs[1]?1:0)*1 - (bs[2]?1:0)*1 - (bs[4]?1:0)*1;
 	//console.log(x[1]+(bs[1]?1:0)+(bs[2]?1:0)+(bs[4]?1:0));
-	if (rn <= 0){
+	if (rn < 0){
 		return -1;
 	}
 	for(var i = 0;i<rn;i++){
@@ -32,11 +34,12 @@ function roll(x,bs,toki){
 		r += y[i];
 	}
 	;
-	if(y.filter(function(x){return x==6;}).length >= 2)r = 'c';
-	if(y.filter(function(x){return x==1;}).length == y.length || 
+	if(y.length == 0){}//escape when roll num = 0
+	else if(y.filter(function(x){return x==6;}).length >= 2)r = 'c';
+	else if(y.filter(function(x){return x==1;}).length == y.length || 
 	(bs[7]&&y.filter(function(x){return x==1;}).length >= 1)
 	)r = 'f';
-	console.log(y.toString()+" +"+x[0]+" ->"+r);
+	console.log((y.length>0?(y.toString()+" +"):"")+x[0]+" ->"+r);
 	return r;
 }
 function RtoString(a,b){
