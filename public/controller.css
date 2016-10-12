@@ -16,6 +16,7 @@ button.mini{
 	width: 10px;
 	border: 1px;
 	padding: 0px;
+	height: 16px;
 }
 textarea.cs2{
 	width: 99%;
@@ -101,11 +102,14 @@ input:checked + label{
 	width:100%;
 }
 tr.fixedwidth td{
-	width:50px;
+	width: 50px;
 }
 tr.fixedwidth2 td{
 	width: 30px;
 }
 tr.fixedwidth3 td{
 	width: 64px;
+}
+tr.fixedwidth4 td{
+	width: 100px;
 }

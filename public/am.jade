@@ -55,8 +55,8 @@ html
 				if(id=="" || id == undefined){alert('Please enter ID');return;}
 				$.post('/add/'+type+'/'+id);
 			}
-			function minus(x){
-				//ask for confirm?
+			function del(){
+				var x = $('#s_del_id').val();
 				$.post('/remove/alid/'+x,{type:adatas[x].type});
 			}
 			function increment(x,item){
@@ -84,6 +84,11 @@ html
 				updateAlistToServer(x,s+n);
 			}
 			function loadEdatas(){
+				$('#s_del_id').empty();
+				$('#s_del_id').append($('<option>',{disabled:true,selected:true}).text("Select"));
+				$.each(adatas, function(k,v){
+					$('#s_del_id').append($('<option>',{value:k}).text(v.type+v.lid+" "+v.name));
+				});
 				for(var x = 0;x<adatas.length;x++){
 					loadEdata(x);
 					$('#cont_'+x).removeClass('unload');
@@ -178,6 +183,7 @@ html
 				$.each(eval('c_rollable_'+adata.type), function(k,v){
 					$('#f_rollable_'+x).append($('<option>',{value:k}).text(v));
 				});
+				
 				$('input[name="toki'+x+'"][value="'+adatas[x].toki+'"]').prop("checked",true);
 				
 			}
@@ -223,16 +229,32 @@ html
 				alert(r);
 			}
 	body
-		div
-			|add
-			select(id='s_new_type')
-				option(value='c').
-					Character
-				option(value='e').
-					Enemy
-			input(type='text' id='i_new_id').value
-			button(onClick='add()').
-				ADD
+		table
+			tr
+				td.left
+					select(id='s_new_type')
+						option(selected disabled) Select
+						option(value='c').
+							Character
+						option(value='e').
+							Enemy
+					input(type='text' id='i_new_id').value
+					
+					button(onClick='add()').
+						Add
+				td
+					|被動側
+					input(id='f_rp_type' disabled).value
+					input(id='f_rp_value' disabled).shortvalue
+			tr
+				td.left
+					select(id='s_del_id')
+					button(onClick='del()').
+						Delete
+				td
+					|主動側
+					input(id='f_ra_type' disabled).value
+					input(id='f_ra_value' disabled).shortvalue
 		- for(var x = 0;x<24;x++)
 			div(id='cont_'+x).unload.display.container
 				table.inline
@@ -280,8 +302,7 @@ html
 							|/
 							input(id='f_MAX_HP_'+x disabled).shortvalue
 						td
-							button(onClick='minus('+x+')').
-								Delete
+							
 					tr.fixedwidth
 						td(id='f_BS1_'+x).clickable
 							|萎縮
@@ -313,6 +334,10 @@ html
 							|戦闘不能
 						td(id='f_LS4_'+x).clickable
 							|死亡
+						td
+							button RPassive
+						td
+							button RActive
 					tr.fixedwidth
 						td.display
 							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x checked).toki

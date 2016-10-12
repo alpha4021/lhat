@@ -1,14 +1,23 @@
 body{
-	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif !important;
 	font-size: 12px;
+}
+select{
+	font-family: inherit;
+    font-size: inherit;
 }
 button{
 	border: 1px;
     border-style: outset;
     height: 18px;
     padding: 0px 0px 0px 0px;
-    font-size: 12px;
+	font-family: inherit;
+    font-size: inherit;
 	
+}
+input{
+	font-family: inherit;
+    font-size: inherit;
 }
 .display{
 	border: 1px;
@@ -68,14 +77,17 @@ input.value {
 	width: 36px;
 	text-align: center;
 }
-input.longvalue {
+.longvalue {
 	width: 100px;
 }
-input.quitelongvalue {
+.quitelongvalue {
 	width: 125px;
 	
 }
-input.verylongvalue{
+.solongvalue{
+	width: 150px;
+}
+.verylongvalue{
 	width: 200px;
 }
 .textcenter{
