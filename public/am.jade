@@ -186,7 +186,7 @@ html
 				});
 				
 				$('input[name="toki'+x+'"][value="'+adatas[x].toki+'"]').prop("checked",true);
-				
+				$('#b_RP_'+x).attr('disabled', (adatas[x].toki.charAt(0) == 'M'));
 			}
 			function getAction(x){
 				return adatas[x].action;
@@ -239,10 +239,15 @@ html
 				$('#f_ra_type').val(c_rollable_c[$('#f_rollable_'+x).val()]);
 				$('#f_ra_value').val(r);
 			}
+			function do_against(){
+				var rp = $('#f_rp_value').val();
+				var ra = $('#f_ra_value').val();
+				alert(against(rp,ra)?"Active":"Passive");
+			}
 	body
-		table
+		table.display
 			tr
-				td.left
+				td.left.solongvalue
 					select(id='s_new_type')
 						option(selected disabled) Select
 						option(value='c').
@@ -253,10 +258,12 @@ html
 					
 					button(onClick='add()').
 						Add
-				td
+				td.longvalue
 					|被動側
 					input(id='f_rp_type' disabled).value
 					input(id='f_rp_value' disabled).shortvalue
+				td(rowspan=2).normalvalue
+					button(onClick='do_against()') Against
 			tr
 				td.left
 					select(id='s_del_id')
