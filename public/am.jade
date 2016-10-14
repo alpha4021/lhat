@@ -49,6 +49,15 @@ html
 					updateAlistToServer(x,'toki');
 					$('#b_RP_'+x).attr('disabled', (this.value.charAt(0) == 'M'));
 				});
+				$('#f_ra_value,#f_rp_value').change(function(){
+					if(is_against_ready()){
+						
+						setTimeout(do_against,30);
+					}
+				});
+				$('#b_rollog').click(function(){
+					$('#f_rollog').toggleClass('unload');
+				});
 			});
 			function add(){
 				var type = $('#s_new_type').val();
@@ -232,17 +241,38 @@ html
 			function RP(x){
 				var r = rollable(x);
 				$('#f_rp_type').val(c_rollable_c[$('#f_rollable_'+x).val()]);
-				$('#f_rp_value').val(r);
+				$('#f_rp_value').val(r).change();
 			}
 			function RA(x){
 				var r = rollable(x);
 				$('#f_ra_type').val(c_rollable_c[$('#f_rollable_'+x).val()]);
-				$('#f_ra_value').val(r);
+				$('#f_ra_value').val(r).change();
 			}
 			function do_against(){
 				var rp = $('#f_rp_value').val();
 				var ra = $('#f_ra_value').val();
-				alert(against(rp,ra)?"Active":"Passive");
+				if(!(rp&&ra))return;
+				var result = against(rp,ra)?"Active":"Passive";
+				console.log($('#f_rollog table').length);
+				$('#f_rollog table')
+					.append(
+						'<tr>'+
+						'<td>'+$('#f_ra_type').val()+ra+'</td>'+
+						'<td>'+$('#f_rp_type').val()+rp+'</td>'+
+						'<td>'+(result)+'</td>'+
+						'</tr>');
+					//.append('Active: '+$('#f_ra_type').val()+ra+'<br>');
+				
+				clear_against();
+			}
+			function clear_against(){
+				$('#f_rp_type').val("");
+				$('#f_ra_type').val("");
+				$('#f_ra_value').val("");
+				$('#f_rp_value').val("");
+			}
+			function is_against_ready(){
+				return ($('#f_ra_value').val()&&$('#f_rp_value').val());
 			}
 	body
 		table.display
@@ -256,23 +286,32 @@ html
 							Enemy
 					input(type='text' id='i_new_id').value
 					
-					button(onClick='add()').
-						Add
+					button(onClick='add()') Add
 				td.longvalue
 					|被動側
 					input(id='f_rp_type' disabled).value
 					input(id='f_rp_value' disabled).shortvalue
-				td(rowspan=2).normalvalue
-					button(onClick='do_against()') Against
 			tr
 				td.left
 					select(id='s_del_id')
-					button(onClick='del()').
-						Delete
+					button(onClick='del()') Delete
 				td
 					|主動側
 					input(id='f_ra_type' disabled).value
 					input(id='f_ra_value' disabled).shortvalue
+			tr
+				td(colspan=9)
+					div#b_rollog
+						|Roll Log
+					div#f_rollog.unload
+						table.fullwidth
+							tr
+								td
+									|Active
+								td
+									|Passive
+								td
+									|Result
 		- for(var x = 0;x<24;x++)
 			div(id='cont_'+x).unload.display.container
 				table.inline

@@ -51,8 +51,6 @@ function RtoString(a,b){
 function against(rp,ra){
 	//return true if active wins
 	console.log('rp='+rp+' ra='+ra);
-	console.log(parseInt(rp));
-	console.log(parseInt(ra));
 	if(rp=='c' || ra =='f')return false;
 	else if(!(isNaN(parseInt(rp)) || isNaN(parseInt(ra))))return parseInt(rp)<parseInt(ra);
 	else return true;
