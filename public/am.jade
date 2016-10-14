@@ -47,6 +47,7 @@ html
 					console.log(this);
 					adatas[x].toki = this.value;
 					updateAlistToServer(x,'toki');
+					$('#b_RP_'+x).attr('disabled', (this.value.charAt(0) == 'M'));
 				});
 			});
 			function add(){
@@ -226,7 +227,17 @@ html
 				//console.log($('input[name="toki'+x+'"]:checked').val());
 				console.log(adatas[x].bs);
 				var r = roll(parseRoll(q),adatas[x].bs,$('input[name="toki'+x+'"]:checked').val());
-				alert(r);
+				return r;
+			}
+			function RP(x){
+				var r = rollable(x);
+				$('#f_rp_type').val(c_rollable_c[$('#f_rollable_'+x).val()]);
+				$('#f_rp_value').val(r);
+			}
+			function RA(x){
+				var r = rollable(x);
+				$('#f_ra_type').val(c_rollable_c[$('#f_rollable_'+x).val()]);
+				$('#f_ra_value').val(r);
 			}
 	body
 		table
@@ -335,9 +346,9 @@ html
 						td(id='f_LS4_'+x).clickable
 							|死亡
 						td
-							button RPassive
+							button(id='b_RP_'+x onClick='RP('+x+')') RPassive
 						td
-							button RActive
+							button(id='b_RA_'+x onClick='RA('+x+')') RActive
 					tr.fixedwidth
 						td.display
 							input(type="radio" value="B" name="toki"+x id="f_toki_B_"+x checked).toki
