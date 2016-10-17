@@ -97,10 +97,6 @@ input[type='radio']{
 	height:0px;
 	width:0px;
 }
-input:checked + label{
-	background-color: #AAD;
-	width:100%;
-}
 tr.fixedwidth td{
 	width: 50px;
 }

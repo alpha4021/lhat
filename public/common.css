@@ -96,3 +96,8 @@ input.value {
 .textcenter{
 	text-align:center;
 }
+
+.neon{
+	border-color: #FFDD1B;
+	box-shadow: 0 0 10px #FFDD1B;
+}

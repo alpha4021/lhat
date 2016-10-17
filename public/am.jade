@@ -44,14 +44,15 @@ html
 				});
 				$('input.toki').change(function(){
 					var x = this.name.substr(4,1);
-					console.log(this);
+					//console.log(this);
 					adatas[x].toki = this.value;
+					$('input.toki').parent().removeClass('neon');
+					$(this).parent().addClass('neon');
 					updateAlistToServer(x,'toki');
 					$('#b_RP_'+x).attr('disabled', (this.value.charAt(0) == 'M'));
 				});
 				$('#f_ra_value,#f_rp_value').change(function(){
 					if(is_against_ready()){
-						
 						setTimeout(do_against,30);
 					}
 				});
@@ -194,11 +195,23 @@ html
 					$('#f_rollable_'+x).append($('<option>',{value:k}).text(v));
 				});
 				
-				$('input[name="toki'+x+'"][value="'+adatas[x].toki+'"]').prop("checked",true);
+				if(adatas[x].hate == max(adatas,'hate') && adatas[x].hate > 0){
+					$('#f_hate_UT_'+x).addClass('neon').text('Top');
+				} else {
+					$('#f_hate_UT_'+x).removeClass('neon').text('Under');
+				}
+				$('input[name="toki'+x+'"][value="'+adatas[x].toki+'"]').prop("checked",true).parent().addClass('neon');
 				$('#b_RP_'+x).attr('disabled', (adatas[x].toki.charAt(0) == 'M'));
 			}
 			function getAction(x){
 				return adatas[x].action;
+			}
+			function max(array,item){
+				var rv = 0;
+				for(var i = 0;i<array.length;i++){
+					if(array[i][item]>rv)rv = array[i][item];
+				}
+				return rv;
 			}
 			function updateAlistToServer(x,item){
 				var value;
@@ -358,8 +371,8 @@ html
 							input(id='f_HP_'+x).shortvalue
 							|/
 							input(id='f_MAX_HP_'+x disabled).shortvalue
-						td
-							
+						td(id='f_hate_UT_'+x).display
+							|Hatetop?
 					tr.fixedwidth
 						td(id='f_BS1_'+x).clickable
 							|萎縮
