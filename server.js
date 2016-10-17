@@ -188,7 +188,7 @@ app.post('/add/:type/:id(\\d+)',function(req,res){
 						effect:data.effect,
 						cs:[null,0,[],0],//regen,reduc,wall
 						bs:[null,0,0,0,0,0,0,0,[]],
-						ls:[null,0,[],false,false],
+						ls:[null,0,[],0,0],
 						hate_top:0,
 						data:data
 						});//index: i in clink
@@ -277,7 +277,7 @@ app.post('/update/:type/:lid(\\d+)',function(req,res){
 	log(_fn,type+lid+' alid='+alid);
 	if(alid == -1){log(_fn,"error: alist id not found.");return;}
 	log(_fn,"item="+item+" value="+value);
-	
+	if(!isNaN(value))value = parseInt(value);//20161017 - remain value as number
 	switch(item){
 		case 'bs5'://alist[alid].bs[5] = value;break;
 		case 'bs1':
