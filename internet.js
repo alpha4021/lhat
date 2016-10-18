@@ -42,11 +42,11 @@ function updatePlayerJson(id,callback){
 		//console.log(res.statusCode);
 		omtime = (res.statusCode==200)?Date.parse(res.headers['last-modified']):0;//online file last modified time
 		log(_fn,fmtime+" "+omtime);
-		if(omtime == 0 || fmtime == 0){callback("error 1",null);return;}
+		if(omtime == 0){callback("error 1",null);return;}
 		if(fmtime>omtime){
 			log(_fn,"File is already latest.");
 			callback(null,true);
-		} else if(fmtime<=omtime){
+		} else {
 			log(_fn,"File updating...");
 			//fs.appendFileSync(uri,res,{flag: 'w'});
 			res.pipe(fs.createWriteStream(uri));
@@ -70,8 +70,3 @@ function getPlayerJson(id,callback){
 		callback(null,player_json);
 	});
 }
-
-/*main*/
-
-//module.exports.getPlayer(42015);
-//module.exports.getEnemy(2);
